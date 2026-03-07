@@ -221,24 +221,47 @@ export default function MCPSetupPage() {
             </div>
           </CollapsibleSection>
 
-          <CollapsibleSection title="OpenClaw" icon="🦞">
+          <CollapsibleSection title="OpenClaw (Recommended)" icon="🦞" defaultOpen>
             <div className="space-y-4 mt-4">
-              <p className="text-gray-400 text-sm">
-                OpenClaw uses a YAML-based configuration file for MCP servers.
+              <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-4">
+                <p className="text-green-400 text-sm">
+                  ✨ <strong>Best Integration:</strong> OpenClaw provides the most seamless experience with OpenMM skills, running locally on your machine with full MCP support.
+                </p>
+              </div>
+              
+              <h4 className="font-medium">Option A: Install as a Skill (Easiest)</h4>
+              <div className="install-box flex items-center justify-between">
+                <code className="text-purple-400 text-sm">openclaw skills add qbt-labs/openmm</code>
+                <CopyButton text="openclaw skills add qbt-labs/openmm" />
+              </div>
+              <p className="text-sm text-gray-400 mt-2">
+                This automatically configures OpenMM and makes all tools available in your sessions.
               </p>
               
-              <h4 className="font-medium">1. Edit your OpenClaw config</h4>
+              <h4 className="font-medium mt-6">Option B: Manual MCP Server Config</h4>
+              <p className="text-gray-400 text-sm">
+                Add to your OpenClaw config file:
+              </p>
               <CodeBlock code={openClawConfig} filename="~/.openclaw/config.yaml" />
               
-              <h4 className="font-medium mt-4">2. Restart the OpenClaw gateway</h4>
+              <h4 className="font-medium mt-4">2. Set your exchange API keys</h4>
+              <p className="text-sm text-gray-400">
+                Add to your shell profile (~/.zshrc or ~/.bashrc):
+              </p>
+              <div className="install-box flex items-center justify-between">
+                <code className="text-purple-400 text-sm">export MEXC_API_KEY=&quot;your-key&quot; MEXC_SECRET=&quot;your-secret&quot;</code>
+                <CopyButton text='export MEXC_API_KEY="your-key" MEXC_SECRET="your-secret"' />
+              </div>
+              
+              <h4 className="font-medium mt-4">3. Restart the OpenClaw gateway</h4>
               <div className="install-box flex items-center justify-between">
                 <code className="text-purple-400 text-sm">openclaw gateway restart</code>
                 <CopyButton text="openclaw gateway restart" />
               </div>
               
-              <h4 className="font-medium mt-4">3. Verify the connection</h4>
+              <h4 className="font-medium mt-4">4. Verify it works</h4>
               <p className="text-sm text-gray-400">
-                The OpenMM tools will be available immediately in your OpenClaw sessions.
+                Ask your agent: <code className="text-purple-400">&quot;Get my MEXC balance&quot;</code> or <code className="text-purple-400">&quot;Show BTC/USDT price&quot;</code>
               </p>
             </div>
           </CollapsibleSection>
@@ -263,6 +286,41 @@ export default function MCPSetupPage() {
               </p>
             </div>
           </CollapsibleSection>
+        </div>
+      </section>
+
+      {/* Local MCP Server */}
+      <section className="mb-12">
+        <h2 className="text-xl font-semibold mb-6">Run MCP Server Locally</h2>
+        <div className="bg-card border border-border rounded-lg p-6">
+          <p className="text-gray-400 text-sm mb-4">
+            Want full control? Clone OpenMM and run the MCP server on your own machine:
+          </p>
+          
+          <h4 className="font-medium mb-2">1. Clone and build</h4>
+          <CodeBlock code={`git clone https://github.com/3rd-Eye-Labs/OpenMM.git
+cd OpenMM
+npm install
+npm run build`} filename="Terminal" />
+          
+          <h4 className="font-medium mt-4 mb-2">2. Configure environment</h4>
+          <CodeBlock code={`cp .env.example .env
+# Edit .env with your API keys`} filename="Terminal" />
+          
+          <h4 className="font-medium mt-4 mb-2">3. Install globally</h4>
+          <CodeBlock code={`npm install -g .
+openmm --help`} filename="Terminal" />
+          
+          <h4 className="font-medium mt-4 mb-2">4. Use with any MCP client</h4>
+          <p className="text-sm text-gray-400">
+            Point your AI client to use the local <code className="text-purple-400">openmm</code> command instead of npx.
+          </p>
+          
+          <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+            <p className="text-sm text-blue-400">
+              💡 <strong>Benefits of self-hosting:</strong> Full privacy, no external dependencies, custom modifications, faster startup time.
+            </p>
+          </div>
         </div>
       </section>
 
