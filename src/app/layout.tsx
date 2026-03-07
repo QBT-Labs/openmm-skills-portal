@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import '@/styles/globals.css'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
   title: 'OpenMM Skills Portal | AI-Native Trading Infrastructure',
@@ -27,8 +29,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-background antialiased">
-        <main>{children}</main>
+      <body className="min-h-screen bg-background antialiased flex flex-col">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   )

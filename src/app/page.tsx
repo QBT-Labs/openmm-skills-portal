@@ -294,7 +294,7 @@ export default function Home() {
       </section>
 
       {/* Footer CTA */}
-      <section className="text-center">
+      <section className="text-center mb-12">
         <h2 className="text-2xl font-bold mb-4">Ready to Build?</h2>
         <p className="text-gray-400 mb-8">Get your agent trading in minutes</p>
         <div className="install-box inline-flex items-center gap-4">
@@ -302,16 +302,6 @@ export default function Home() {
           <CopyButton text={INSTALL_COMMAND} />
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="mt-24 pt-8 border-t border-border text-center text-gray-500 text-sm">
-        <p>© 2026 QBT Labs. MIT License.</p>
-        <div className="flex justify-center gap-6 mt-4">
-          <a href="https://github.com/QBT-Labs/openmm-skills-portal" className="hover:text-white">GitHub</a>
-          <a href="https://qbtlabs.io" className="hover:text-white">QBT Labs</a>
-          <a href="https://x.com/QBTLabs" className="hover:text-white">X/Twitter</a>
-        </div>
-      </footer>
     </div>
   )
 }
