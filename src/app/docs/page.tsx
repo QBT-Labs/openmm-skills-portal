@@ -28,9 +28,10 @@ const docSections = [
   {
     icon: Code,
     title: 'API Reference',
-    description: 'Full REST API documentation',
-    href: '/docs/api',
-    time: '15 min',
+    description: 'REST API documentation',
+    href: '#',
+    time: 'Coming soon',
+    disabled: true,
   },
 ]
 

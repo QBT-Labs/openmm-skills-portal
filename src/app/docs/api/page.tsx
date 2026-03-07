@@ -144,6 +144,12 @@ export default function APIPage() {
         <p className="text-xl text-gray-400">
           Build custom integrations with the OpenMM REST API.
         </p>
+        <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+          <p className="text-yellow-400 font-medium">🚧 Coming Soon</p>
+          <p className="text-yellow-400/80 text-sm mt-1">
+            REST API is planned for a future release. Currently OpenMM works via CLI and MCP tools.
+          </p>
+        </div>
       </div>
 
       {/* Base URL */}
