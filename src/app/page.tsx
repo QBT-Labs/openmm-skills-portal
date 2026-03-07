@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AccessMethods } from '@/components/home/access-methods'
 import { SupportedExchanges } from '@/components/home/supported-exchanges'
+import { UseCases } from '@/components/home/use-cases'
 
 const INSTALL_COMMAND = 'npx openmm init'
 
@@ -148,6 +149,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Use Cases Section */}
+      <UseCases />
 
       {/* Supported Exchanges Section */}
       <SupportedExchanges />
