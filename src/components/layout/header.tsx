@@ -8,6 +8,7 @@ import { useState } from 'react'
 
 const navLinks = [
   { label: 'Skills', href: '/skills' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Docs', href: '/docs' },
   { label: 'MCP Setup', href: '/docs/mcp-setup' },
 ]
