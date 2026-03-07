@@ -7,10 +7,9 @@ import { Github, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 const navLinks = [
-  { label: 'Skills', href: '#skills' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Docs', href: '#docs' },
-  { label: 'Exchanges', href: '#exchanges' },
+  { label: 'Skills', href: '/skills' },
+  { label: 'Docs', href: '/docs' },
+  { label: 'MCP Setup', href: '/docs/mcp-setup' },
 ]
 
 export function Header() {
@@ -46,19 +45,23 @@ export function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             <a
-              href="https://github.com/QBT-Labs/openmm-skills-portal"
+              href="https://github.com/QBT-Labs/openmm"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"
             >
               <Github className="w-5 h-5" />
             </a>
-            <Button variant="outline" size="sm">
-              API Docs
-            </Button>
-            <Button size="sm">
-              Get Started
-            </Button>
+            <Link href="/docs">
+              <Button variant="outline" size="sm">
+                Docs
+              </Button>
+            </Link>
+            <Link href="/skills">
+              <Button size="sm">
+                Get Started
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -86,12 +89,16 @@ export function Header() {
                 </a>
               ))}
               <div className="flex gap-3 pt-4 border-t border-border">
-                <Button variant="outline" size="sm" className="flex-1">
-                  API Docs
-                </Button>
-                <Button size="sm" className="flex-1">
-                  Get Started
-                </Button>
+                <Link href="/docs" className="flex-1">
+                  <Button variant="outline" size="sm" className="w-full">
+                    Docs
+                  </Button>
+                </Link>
+                <Link href="/skills" className="flex-1">
+                  <Button size="sm" className="w-full">
+                    Get Started
+                  </Button>
+                </Link>
               </div>
             </nav>
           </div>
