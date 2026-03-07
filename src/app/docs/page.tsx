@@ -35,10 +35,13 @@ const docSections = [
 ]
 
 const quickLinks = [
-  { title: 'Install Skills', href: '/#skills' },
-  { title: 'View Pricing', href: '/#pricing' },
+  { title: 'Install Skills', href: '/skills' },
+  { title: 'View Pricing', href: '/pricing' },
   { title: 'Supported Exchanges', href: '/#exchanges' },
   { title: 'GitHub Repository', href: 'https://github.com/3rd-Eye-Labs/OpenMM', external: true },
+  { title: 'CLI Reference (GitHub)', href: 'https://github.com/3rd-Eye-Labs/OpenMM/blob/main/docs/CLI.md', external: true },
+  { title: 'Grid Strategy Guide', href: 'https://github.com/3rd-Eye-Labs/OpenMM/blob/main/docs/guides/GRID_STRATEGY.md', external: true },
+  { title: 'Cardano Tokens Guide', href: 'https://github.com/3rd-Eye-Labs/OpenMM/blob/main/docs/guides/CARDANO_TOKENS.md', external: true },
 ]
 
 export default function DocsPage() {

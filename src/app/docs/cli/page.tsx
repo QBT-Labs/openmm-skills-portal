@@ -144,6 +144,14 @@ export default function CLIPage() {
         <p className="text-xl text-gray-400">
           Use OpenMM directly from your terminal for scripts and automation.
         </p>
+        <a 
+          href="https://github.com/3rd-Eye-Labs/OpenMM/blob/main/docs/CLI.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 mt-4 text-purple-400 hover:text-purple-300 transition-colors"
+        >
+          📖 View full CLI reference on GitHub <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
 
       {/* Installation */}
