@@ -39,9 +39,11 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">O</span>
-              </div>
+              <img 
+                src="/qbt-logo.png" 
+                alt="QBT Labs" 
+                className="w-8 h-8 rounded-lg"
+              />
               <span className="font-bold text-lg bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                 OpenMM
               </span>
