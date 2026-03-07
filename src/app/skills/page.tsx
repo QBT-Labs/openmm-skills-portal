@@ -140,11 +140,9 @@ export default function SkillsDirectory() {
       {/* Coming Soon */}
       <section className="mb-16">
         <h2 className="text-xl font-semibold mb-6 text-center text-gray-400">Coming Soon</h2>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-1 max-w-md mx-auto gap-4">
           {[
-            { name: 'openmm-cardano', description: 'Dedicated Cardano DEX integration', tools: 5 },
-            { name: 'openmm-analytics', description: 'AI-powered market analysis', tools: 8 },
-            { name: 'openmm-strategy', description: 'Strategy generation and backtesting', tools: 6 },
+            { name: 'openmm-analytics', description: 'AI-powered market analysis and backtesting', tools: 8 },
           ].map((skill) => (
             <div
               key={skill.name}
