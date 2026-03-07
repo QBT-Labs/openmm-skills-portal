@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AccessMethods } from '@/components/home/access-methods'
+import { SupportedExchanges } from '@/components/home/supported-exchanges'
 
 const INSTALL_COMMAND = 'npx openmm init'
 
@@ -147,6 +148,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Supported Exchanges Section */}
+      <SupportedExchanges />
 
       {/* Access Methods Section */}
       <AccessMethods />
