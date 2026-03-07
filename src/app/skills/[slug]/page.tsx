@@ -243,7 +243,7 @@ export default function SkillDetailPage({ params }: { params: { slug: string } }
         <div className="flex justify-center gap-6 mt-4">
           <Link href="/" className="hover:text-white">Home</Link>
           <Link href="/skills" className="hover:text-white">Skills</Link>
-          <a href="https://github.com/QBT-Labs/openmm-skills-portal" className="hover:text-white">GitHub</a>
+          <a href="https://github.com/3rd-Eye-Labs/OpenMM" className="hover:text-white">GitHub</a>
         </div>
       </footer>
     </div>
