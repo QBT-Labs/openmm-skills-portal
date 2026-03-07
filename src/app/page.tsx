@@ -4,6 +4,7 @@ import { Copy, Check, ArrowRight, Sparkles, Zap, Shield } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { AccessMethods } from '@/components/home/access-methods'
 
 const INSTALL_COMMAND = 'npx openmm init'
 
@@ -146,6 +147,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Access Methods Section */}
+      <AccessMethods />
 
       {/* Code Preview Section */}
       <section className="max-w-5xl mx-auto px-4 pb-24">
