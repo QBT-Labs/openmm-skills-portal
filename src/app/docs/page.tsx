@@ -22,17 +22,15 @@ const docSections = [
     icon: Terminal,
     title: 'CLI Reference',
     description: 'Command-line tool documentation',
-    href: '#',
-    time: 'Coming soon',
-    disabled: true,
+    href: '/docs/cli',
+    time: '8 min',
   },
   {
     icon: Code,
     title: 'API Reference',
     description: 'Full REST API documentation',
-    href: '#',
-    time: 'Coming soon',
-    disabled: true,
+    href: '/docs/api',
+    time: '15 min',
   },
 ]
 
