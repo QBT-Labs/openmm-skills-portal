@@ -37,12 +37,13 @@ function CodeBlock({ code }: { code: string }) {
 
 const commands = [
   {
-    name: 'openmm init',
-    description: 'Initialize OpenMM and start the MCP server',
-    usage: 'openmm init',
+    name: 'openmm balance',
+    description: 'Get account balances from an exchange',
+    usage: 'openmm balance --exchange mexc --asset BTC',
     flags: [
-      { flag: '--port', description: 'Port to run the server on (default: 3000)' },
-      { flag: '--config', description: 'Path to config file' },
+      { flag: '--exchange', description: 'Exchange id (mexc, gateio, kraken, bitget)' },
+      { flag: '--asset', description: 'Filter by specific asset (optional)' },
+      { flag: '--json', description: 'Output in JSON format' },
     ],
   },
   {
@@ -65,15 +66,6 @@ const commands = [
     ],
   },
   {
-    name: 'openmm balance',
-    description: 'Get account balances',
-    usage: 'openmm balance --exchange mexc',
-    flags: [
-      { flag: '--exchange', description: 'Exchange id' },
-      { flag: '--asset', description: 'Filter by specific asset (optional)' },
-    ],
-  },
-  {
     name: 'openmm trades',
     description: 'Get recent trades for a trading pair',
     usage: 'openmm trades --exchange mexc --symbol BTC/USDT --limit 50',
@@ -88,7 +80,50 @@ const commands = [
     description: 'Get Cardano token price from DEX aggregation',
     usage: 'openmm cardano-price --symbol SNEK',
     flags: [
-      { flag: '--symbol', description: 'Cardano token symbol (e.g., SNEK, INDY)' },
+      { flag: '--symbol', description: 'Cardano token symbol (e.g., SNEK, INDY, NIGHT)' },
+    ],
+  },
+  {
+    name: 'openmm orders list',
+    description: 'List open orders on an exchange',
+    usage: 'openmm orders list --exchange mexc --symbol BTC/USDT',
+    flags: [
+      { flag: '--exchange', description: 'Exchange id' },
+      { flag: '--symbol', description: 'Filter by trading pair (optional)' },
+      { flag: '--limit', description: 'Number of orders to display' },
+    ],
+  },
+  {
+    name: 'openmm orders create',
+    description: 'Create a new order',
+    usage: 'openmm orders create --exchange mexc --symbol BTC/USDT --side buy --type limit --amount 0.001 --price 50000',
+    flags: [
+      { flag: '--exchange', description: 'Exchange id' },
+      { flag: '--symbol', description: 'Trading pair' },
+      { flag: '--side', description: 'Order side: buy or sell' },
+      { flag: '--type', description: 'Order type: market or limit' },
+      { flag: '--amount', description: 'Order amount' },
+      { flag: '--price', description: 'Order price (required for limit orders)' },
+    ],
+  },
+  {
+    name: 'openmm orders cancel',
+    description: 'Cancel an existing order',
+    usage: 'openmm orders cancel --exchange mexc --id ORDER_ID --symbol BTC/USDT',
+    flags: [
+      { flag: '--exchange', description: 'Exchange id' },
+      { flag: '--id', description: 'Order ID to cancel' },
+      { flag: '--symbol', description: 'Trading pair symbol' },
+    ],
+  },
+  {
+    name: 'openmm pool-discovery',
+    description: 'Discover Cardano DEX liquidity pools for a token',
+    usage: 'openmm pool-discovery discover SNEK --limit 5',
+    flags: [
+      { flag: '--limit', description: 'Limit number of pools shown (default: 10)' },
+      { flag: '--min-liquidity', description: 'Filter by minimum TVL in dollars' },
+      { flag: '--show-all', description: 'Show all pools (ignore limit)' },
     ],
   },
 ]
