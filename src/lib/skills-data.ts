@@ -263,8 +263,6 @@ export const skills: Skill[] = [
     relatedSkills: ['openmm-market-data'],
     pricing: '$0.01-0.05 per call',
   },
-]
-
   {
     slug: 'openmm-cardano',
     name: 'openmm-cardano',
