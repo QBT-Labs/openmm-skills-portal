@@ -38,7 +38,7 @@ const quickLinks = [
   { title: 'Install Skills', href: '/#skills' },
   { title: 'View Pricing', href: '/#pricing' },
   { title: 'Supported Exchanges', href: '/#exchanges' },
-  { title: 'GitHub Repository', href: 'https://github.com/QBT-Labs/openmm-skills-portal', external: true },
+  { title: 'GitHub Repository', href: 'https://github.com/3rd-Eye-Labs/OpenMM', external: true },
 ]
 
 export default function DocsPage() {

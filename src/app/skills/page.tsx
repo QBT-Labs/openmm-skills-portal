@@ -163,7 +163,7 @@ export default function SkillsDirectory() {
         <p>© 2026 QBT Labs. MIT License.</p>
         <div className="flex justify-center gap-6 mt-4">
           <Link href="/" className="hover:text-white">Home</Link>
-          <a href="https://github.com/QBT-Labs/openmm-skills-portal" className="hover:text-white">GitHub</a>
+          <a href="https://github.com/3rd-Eye-Labs/OpenMM" className="hover:text-white">GitHub</a>
           <a href="https://qbtlabs.io" className="hover:text-white">QBT Labs</a>
         </div>
       </footer>

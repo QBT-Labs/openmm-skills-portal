@@ -24,7 +24,7 @@ const footerLinks = [
     title: 'Company',
     links: [
       { label: 'QBT Labs', href: 'https://qbtlabs.io' },
-      { label: 'GitHub', href: 'https://github.com/QBT-Labs/openmm-skills-portal' },
+      { label: 'GitHub', href: 'https://github.com/3rd-Eye-Labs/OpenMM' },
       { label: 'X/Twitter', href: 'https://x.com/QBTLabs' },
       { label: 'Discord', href: '#' },
     ],
@@ -50,7 +50,7 @@ export function Footer() {
               AI-Native Trading Infrastructure
             </p>
             <a
-              href="https://github.com/QBT-Labs/openmm-skills-portal"
+              href="https://github.com/3rd-Eye-Labs/OpenMM"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
