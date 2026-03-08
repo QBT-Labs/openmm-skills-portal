@@ -26,9 +26,8 @@ function CopyButton({ text }: { text: string }) {
 
 function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
   return (
-    <div className="relative bg-secondary/50 rounded-lg overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border">
-        <span className="text-xs text-gray-500">{language}</span>
+    <div className="relative bg-[#1a1a2e] rounded-lg overflow-hidden border border-border">
+      <div className="absolute top-2 right-2">
         <CopyButton text={code} />
       </div>
       <pre className="p-4 text-sm overflow-x-auto">
