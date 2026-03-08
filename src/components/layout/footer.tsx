@@ -5,19 +5,19 @@ const footerLinks = [
   {
     title: 'Product',
     links: [
-      { label: 'Skills', href: '#skills' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'Exchanges', href: '#exchanges' },
-      { label: 'Use Cases', href: '#use-cases' },
+      { label: 'Skills', href: '/skills' },
+      { label: 'Prompts', href: '/prompts' },
+      { label: 'Exchanges', href: '/#exchanges' },
+      { label: 'Use Cases', href: '/#use-cases' },
     ],
   },
   {
     title: 'Resources',
     links: [
-      { label: 'Documentation', href: '#docs' },
-      { label: 'API Reference', href: '#docs' },
-      { label: 'MCP Setup', href: '#docs' },
-      { label: 'Examples', href: '#' },
+      { label: 'Documentation', href: '/docs' },
+      { label: 'Quick Start', href: '/docs/quickstart' },
+      { label: 'MCP Setup', href: '/docs/mcp-setup' },
+      { label: 'CLI Reference', href: '/docs/cli' },
     ],
   },
   {
@@ -26,7 +26,7 @@ const footerLinks = [
       { label: 'QBT Labs', href: 'https://qbtlabs.io' },
       { label: 'GitHub', href: 'https://github.com/3rd-Eye-Labs/OpenMM' },
       { label: 'X/Twitter', href: 'https://x.com/QBTLabs' },
-      { label: 'Discord', href: '#' },
+      { label: 'Discord', href: 'https://discord.gg/openclaw' },
     ],
   },
 ]
