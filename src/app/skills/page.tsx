@@ -119,10 +119,10 @@ export default function SkillsDirectory() {
                   <CopyButton text={skill.installCommands[0].command} />
                 </div>
 
-                {/* Pricing & Link */}
+                {/* License & Link */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">
-                    Pricing: <span className="text-purple-400">{skill.pricing}</span>
+                    <span className="text-green-400">Open Source</span>
                   </span>
                   <Link
                     href={`/skills/${skill.slug}`}

@@ -412,12 +412,7 @@ openmm --help`} filename="Terminal" />
           >
             Browse Skills
           </Link>
-          <Link
-            href="/#pricing"
-            className="px-4 py-2 bg-secondary hover:bg-secondary/80 rounded-lg text-sm transition-colors"
-          >
-            View Pricing
-          </Link>
+
         </div>
       </section>
     </div>

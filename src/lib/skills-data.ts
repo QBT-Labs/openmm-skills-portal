@@ -159,7 +159,7 @@ export const skills: Skill[] = [
       'Stream trade data for market analysis',
     ],
     relatedSkills: ['openmm-trading', 'openmm-cardano'],
-    pricing: '$0.01 per call',
+    pricing: 'Open Source',
   },
   {
     slug: 'openmm-trading',
@@ -261,7 +261,7 @@ export const skills: Skill[] = [
       'Create trading dashboards for AI agents',
     ],
     relatedSkills: ['openmm-market-data'],
-    pricing: '$0.01-0.05 per call',
+    pricing: 'Open Source',
   },
   {
     slug: 'openmm-cardano',
@@ -350,7 +350,7 @@ export const skills: Skill[] = [
       'Build Cardano trading strategies',
     ],
     relatedSkills: ['openmm-market-data', 'openmm-strategy'],
-    pricing: '$0.01 per call',
+    pricing: 'Open Source',
   },
   {
     slug: 'openmm-strategy',
@@ -457,7 +457,7 @@ export const skills: Skill[] = [
       'Automated market making for tokens',
     ],
     relatedSkills: ['openmm-trading', 'openmm-cardano'],
-    pricing: '$0.05 per call',
+    pricing: 'Open Source',
   },
 ]
 

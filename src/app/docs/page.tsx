@@ -39,7 +39,6 @@ const quickLinks = [
   { title: 'OpenClaw Setup Guide', href: '/docs/openclaw' },
   { title: 'Cross-Skill Workflows', href: '/docs/workflows' },
   { title: 'Prompt Library', href: '/prompts' },
-  { title: 'View Pricing', href: '/pricing' },
   { title: 'GitHub Repository', href: 'https://github.com/3rd-Eye-Labs/OpenMM', external: true },
   { title: 'CLI Reference (GitHub)', href: 'https://github.com/3rd-Eye-Labs/OpenMM/blob/main/docs/CLI.md', external: true },
 ]

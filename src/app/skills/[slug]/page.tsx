@@ -193,18 +193,20 @@ export default function SkillDetailPage({ params }: { params: { slug: string } }
 
       {/* Pricing */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Pricing</h2>
+        <h2 className="text-xl font-semibold mb-4">License</h2>
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-2xl font-bold text-purple-400">{skill.pricing}</p>
-              <p className="text-sm text-gray-500">Pay per call with USDC on Base or Solana</p>
+              <p className="text-2xl font-bold text-green-400">Open Source</p>
+              <p className="text-sm text-gray-500">MIT License — Free to use and modify</p>
             </div>
             <a
-              href="/#pricing"
+              href="https://github.com/3rd-Eye-Labs/OpenMM"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center text-purple-400 text-sm hover:text-purple-300"
             >
-              View all pricing <ExternalLink className="w-4 h-4 ml-1" />
+              View on GitHub <ExternalLink className="w-4 h-4 ml-1" />
             </a>
           </div>
         </div>
