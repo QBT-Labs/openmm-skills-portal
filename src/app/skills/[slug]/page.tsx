@@ -8,8 +8,13 @@ export function generateStaticParams() {
   }))
 }
 
-export default function SkillDetailPage({ params }: { params: { slug: string } }) {
-  const skill = getSkillBySlug(params.slug)
+type Props = {
+  params: Promise<{ slug: string }>
+}
+
+export default async function SkillDetailPage({ params }: Props) {
+  const { slug } = await params
+  const skill = getSkillBySlug(slug)
 
   if (!skill) {
     notFound()
