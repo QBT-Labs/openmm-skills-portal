@@ -5,44 +5,54 @@ import { Copy, Check, Play, RotateCcw } from 'lucide-react'
 
 const setupSteps = [
   {
-    command: 'git clone https://github.com/3rd-Eye-Labs/OpenMM.git && cd OpenMM',
-    output: ['Cloning into \'OpenMM\'...', 'remote: Enumerating objects: 234, done.', 'Receiving objects: 100% (234/234), done.'],
-    delay: 1500,
+    command: 'npm install -g @3rd-eye-labs/openmm',
+    output: ['added 38 packages in 3s', ''],
+    delay: 1000,
   },
   {
-    command: 'npm install',
-    output: ['Installing dependencies...', 'added 89 packages in 4.2s'],
-    delay: 1200,
-  },
-  {
-    command: 'cp .env.example .env',
-    output: ['✓ Created .env file'],
-    delay: 500,
-  },
-  {
-    command: '# Edit .env with your exchange API keys',
+    command: 'npx @3rd-eye-labs/openmm setup',
     output: [
-      '# MEXC_API_KEY="your-mexc-api-key"',
-      '# MEXC_SECRET="your-mexc-secret"',
-      '# GATEIO_API_KEY="your-gateio-key"',
-      '# See: github.com/3rd-Eye-Labs/OpenMM#quick-start',
-    ],
-    delay: 800,
-  },
-  {
-    command: 'npx openmm init',
-    output: [
-      '✓ Validating environment...',
-      '✓ Connected to MEXC',
-      '✓ Connected to Gate.io', 
-      '✓ Connected to Bitget',
-      '✓ Connected to Kraken',
-      '✓ 30 tools available',
-      '✓ MCP server ready on port 3000',
       '',
-      '🚀 OpenMM is ready! Ask your AI agent to trade.',
+      '╔═══════════════════════════════════════════╗',
+      '║              OPENMM                       ║',
+      '║  AI-Native Market Making Infrastructure   ║',
+      '║  Configure your exchange API credentials  ║',
+      '╚═══════════════════════════════════════════╝',
+      '',
+      'Which exchanges do you want to configure?',
+      '  1. MEXC',
+      '  2. Gate.io',
+      '  3. Kraken',
+      '  4. Bitget',
+      '',
+      'Your selection: 1,2,3,4',
+      '',
+      '🔑 MEXC credentials',
+      '   Get your API key at: https://www.mexc.com/api',
+      '   API Key: ********',
+      '   Secret Key: ********',
+      '',
+      '🔑 Gate.io credentials',
+      '   Get your API key at: https://www.gate.io/myaccount/api_key_manage',
+      '   API Key: ********',
+      '   Secret Key: ********',
+      '',
+      '🔑 Kraken credentials',
+      '   Get your API key at: https://www.kraken.com/u/security/api',
+      '   API Key: ********',
+      '   Private Key: ********',
+      '',
+      '🔑 Bitget credentials',
+      '   Get your API key at: https://www.bitget.com/account/newapi',
+      '   API Key: ********',
+      '   Secret Key: ********',
+      '   Passphrase: ********',
+      '',
+      '✅ Credentials saved to .env',
+      '',
+      '💡 Try running: openmm balance --exchange mexc',
     ],
-    delay: 2000,
+    delay: 3000,
   },
 ]
 
@@ -101,7 +111,6 @@ export function InteractiveTerminal() {
       return
     }
 
-    // Start typing the command
     setIsTyping(true)
     let charIndex = 0
     const command = step.command
@@ -114,12 +123,10 @@ export function InteractiveTerminal() {
         clearInterval(typingInterval)
         setIsTyping(false)
         
-        // Show output after a short delay
         setTimeout(() => {
           setShowOutput(true)
           setCompletedSteps(prev => [...prev, currentStep])
           
-          // Move to next step
           setTimeout(() => {
             if (currentStep < setupSteps.length - 1) {
               setShowOutput(false)
@@ -136,7 +143,6 @@ export function InteractiveTerminal() {
     return () => clearInterval(typingInterval)
   }, [currentStep, isPlaying])
 
-  // Auto-start on mount
   useEffect(() => {
     const timer = setTimeout(() => {
       playAnimation()
@@ -146,6 +152,18 @@ export function InteractiveTerminal() {
 
   const currentStepData = setupSteps[currentStep]
 
+  const getLineColor = (line: string) => {
+    if (line.startsWith('✅') || line.startsWith('💡')) return 'text-green-400'
+    if (line.startsWith('🔑')) return 'text-yellow-400'
+    if (line.startsWith('╔') || line.startsWith('║') || line.startsWith('╚')) return 'text-cyan-400'
+    if (line.startsWith('Which exchanges') || line.startsWith('Your selection')) return 'text-green-400'
+    if (line.includes('MEXC') || line.includes('Gate.io') || line.includes('Kraken') || line.includes('Bitget')) return 'text-white'
+    if (line.includes('Get your API')) return 'text-gray-400'
+    if (line.includes('API Key:') || line.includes('Secret') || line.includes('Private') || line.includes('Passphrase')) return 'text-gray-500'
+    if (line.startsWith('added')) return 'text-green-400'
+    return 'text-gray-400'
+  }
+
   return (
     <section className="max-w-4xl mx-auto px-4 py-16">
       <div className="text-center mb-8">
@@ -154,7 +172,7 @@ export function InteractiveTerminal() {
             Setup in 60 Seconds
           </span>
         </h2>
-        <p className="text-gray-400">Watch the installation process or copy commands</p>
+        <p className="text-gray-400">Install globally, configure once, trade everywhere</p>
       </div>
 
       <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -180,7 +198,7 @@ export function InteractiveTerminal() {
         </div>
         
         {/* Terminal content */}
-        <div className="p-6 font-mono text-sm bg-[#0d0d1a] min-h-[320px]">
+        <div className="p-6 font-mono text-sm bg-[#0d0d1a] min-h-[400px] max-h-[500px] overflow-y-auto">
           {/* Completed steps */}
           {completedSteps.map((stepIndex) => (
             <div key={stepIndex} className="mb-4">
@@ -191,8 +209,8 @@ export function InteractiveTerminal() {
               </div>
               <div className="ml-4 mt-1 space-y-0.5">
                 {setupSteps[stepIndex].output.map((line, i) => (
-                  <div key={i} className={`text-xs ${line.startsWith('✓') || line.startsWith('🚀') ? 'text-green-400' : line.startsWith('#') ? 'text-gray-500' : 'text-gray-500'}`}>
-                    {line}
+                  <div key={i} className={`text-xs ${getLineColor(line)}`}>
+                    {line || '\u00A0'}
                   </div>
                 ))}
               </div>
@@ -212,8 +230,8 @@ export function InteractiveTerminal() {
               {showOutput && (
                 <div className="ml-4 mt-1 space-y-0.5">
                   {currentStepData.output.map((line, i) => (
-                    <div key={i} className={`text-xs ${line.startsWith('✓') || line.startsWith('🚀') ? 'text-green-400' : line.startsWith('#') ? 'text-gray-500' : 'text-gray-500'}`}>
-                      {line}
+                    <div key={i} className={`text-xs ${getLineColor(line)}`}>
+                      {line || '\u00A0'}
                     </div>
                   ))}
                 </div>
@@ -240,19 +258,26 @@ export function InteractiveTerminal() {
       </div>
 
       {/* Quick copy commands */}
-      <div className="mt-6 grid sm:grid-cols-2 gap-3">
+      <div className="mt-6 grid sm:grid-cols-3 gap-3">
         <div className="bg-card/50 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-500 mb-2">Clone & Install</div>
+          <div className="text-xs text-gray-500 mb-2">CLI</div>
           <div className="flex items-center justify-between">
-            <code className="text-purple-400 text-sm truncate mr-2">git clone https://github.com/3rd-Eye-Labs/OpenMM.git</code>
-            <CopyButton text="git clone https://github.com/3rd-Eye-Labs/OpenMM.git && cd OpenMM && npm install" />
+            <code className="text-purple-400 text-xs truncate mr-2">npm i -g @3rd-eye-labs/openmm</code>
+            <CopyButton text="npm install -g @3rd-eye-labs/openmm" />
           </div>
         </div>
         <div className="bg-card/50 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-500 mb-2">Initialize</div>
+          <div className="text-xs text-gray-500 mb-2">MCP Server</div>
           <div className="flex items-center justify-between">
-            <code className="text-purple-400 text-sm truncate mr-2">cp .env.example .env && npx openmm init</code>
-            <CopyButton text="cp .env.example .env && npx openmm init" />
+            <code className="text-purple-400 text-xs truncate mr-2">npm i -g @qbtlabs/openmm-mcp</code>
+            <CopyButton text="npm install -g @qbtlabs/openmm-mcp" />
+          </div>
+        </div>
+        <div className="bg-card/50 border border-border rounded-lg p-4">
+          <div className="text-xs text-gray-500 mb-2">Skills</div>
+          <div className="flex items-center justify-between">
+            <code className="text-purple-400 text-xs truncate mr-2">npx @qbtlabs/openmm-skills --all</code>
+            <CopyButton text="npx @qbtlabs/openmm-skills --all" />
           </div>
         </div>
       </div>

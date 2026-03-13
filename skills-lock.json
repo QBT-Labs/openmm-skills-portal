@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": {
+    "openmm-cardano-dex": {
+      "source": "QBT-Labs/OpenMM-ai",
+      "sourceType": "github",
+      "computedHash": "894d0d9803d3e14baefa8a45e29e23304f44f00889484dfff92a5b6b0c724f8b"
+    },
+    "openmm-exchange-setup": {
+      "source": "QBT-Labs/OpenMM-ai",
+      "sourceType": "github",
+      "computedHash": "4ec24de338b8bcf8b00b9090ff4068e1c459e1d04cad0c0e94971accc29f6c99"
+    },
+    "openmm-grid-trading": {
+      "source": "QBT-Labs/OpenMM-ai",
+      "sourceType": "github",
+      "computedHash": "8402cdd5a7ce8c04b32cc1605bcabde32f7dbd86638590acb4fa8bbe60800318"
+    },
+    "openmm-order-management": {
+      "source": "QBT-Labs/OpenMM-ai",
+      "sourceType": "github",
+      "computedHash": "1592ca4bd7413099cd19383a39ef65576c7d82966a5c322cca6239b24217e87c"
+    },
+    "openmm-portfolio": {
+      "source": "QBT-Labs/OpenMM-ai",
+      "sourceType": "github",
+      "computedHash": "0d91d78fba4b81ed3ac84252e9e1d0432f259fc00d610b6f21aea6e24630c6f5"
+    }
+  }
+}

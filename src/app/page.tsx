@@ -11,7 +11,7 @@ import { InteractiveTerminal } from '@/components/home/interactive-terminal'
 import { MCPClients } from '@/components/home/mcp-clients'
 import { PlugAndPlaySkills } from '@/components/home/plug-and-play-skills'
 
-const INSTALL_COMMAND = 'npx @qbtlabs/openmm-skills --all'
+const INSTALL_COMMAND = 'npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp'
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -133,6 +133,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Interactive Terminal Section - Right after Browse Skills */}
+      <InteractiveTerminal />
+
       {/* Features Section */}
       <section className="max-w-5xl mx-auto px-4 py-20">
         <div className="grid md:grid-cols-3 gap-8">
@@ -155,9 +158,6 @@ export default function Home() {
 
       {/* MCP Clients Section */}
       <MCPClients />
-
-      {/* Interactive Terminal Section */}
-      <InteractiveTerminal />
 
       {/* Plug and Play Skills Section */}
       <PlugAndPlaySkills />
