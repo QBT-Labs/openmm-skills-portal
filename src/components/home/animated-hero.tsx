@@ -100,7 +100,7 @@ export function AnimatedHero() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
           </span>
-          Now with Cardano DEX support
+          One bridge. Every exchange.
         </div>
 
         {/* Animated Headline */}
@@ -119,23 +119,6 @@ export function AnimatedHero() {
           Get prices, place orders, and run strategies with natural language.
         </p>
 
-        {/* Stats Bar */}
-        <div className="flex items-center justify-center gap-4 sm:gap-8 text-sm mb-10 flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="text-white font-semibold">4</span>
-            <span className="text-gray-400">Exchanges</span>
-          </div>
-          <div className="w-px h-4 bg-gray-600 hidden sm:block" />
-          <div className="flex items-center gap-2">
-            <span className="text-white font-semibold">30+</span>
-            <span className="text-gray-400">Tools</span>
-          </div>
-          <div className="w-px h-4 bg-gray-600 hidden sm:block" />
-          <div className="flex items-center gap-2">
-            <span className="text-white font-semibold">Open</span>
-            <span className="text-gray-400">Source</span>
-          </div>
-        </div>
       </div>
 
       {/* CSS for animations */}

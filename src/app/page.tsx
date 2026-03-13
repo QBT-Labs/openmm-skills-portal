@@ -63,7 +63,25 @@ export default function Home() {
       <AnimatedHero />
 
       {/* Install Command + CTA Section */}
-      <section className="max-w-5xl mx-auto px-4 -mt-10 pb-16 text-center relative z-20">
+      <section className="max-w-5xl mx-auto px-4 -mt-16 pb-16 text-center relative z-20">
+        {/* Stats Bar */}
+        <div className="flex items-center justify-center gap-4 sm:gap-8 text-sm mb-6 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">4</span>
+            <span className="text-gray-400">Exchanges</span>
+          </div>
+          <div className="w-px h-4 bg-gray-600 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">30+</span>
+            <span className="text-gray-400">Tools</span>
+          </div>
+          <div className="w-px h-4 bg-gray-600 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">Open</span>
+            <span className="text-gray-400">Source</span>
+          </div>
+        </div>
+
         {/* Install Command */}
         <div className="install-box inline-flex items-center gap-3 mb-8">
           <span className="text-gray-500">$</span>
