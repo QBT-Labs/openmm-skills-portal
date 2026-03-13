@@ -32,7 +32,7 @@ export function AnimatedHero() {
       const height = rect.height
       const centerX = width / 2
       const centerY = height / 2
-      const radius = Math.min(width, height) * 0.45
+      const radius = Math.min(width, height) * 0.6
 
       ctx.clearRect(0, 0, width, height)
 
@@ -86,11 +86,13 @@ export function AnimatedHero() {
   return (
     <section className="relative overflow-hidden pt-24 pb-8 flex items-center justify-center">
       {/* Animated Orb Background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ filter: 'blur(60px)' }}
-      />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ top: '-20%', height: '140%' }}>
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full"
+          style={{ filter: 'blur(80px)', minHeight: '600px' }}
+        />
+      </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
