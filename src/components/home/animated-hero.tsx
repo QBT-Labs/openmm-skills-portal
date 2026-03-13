@@ -95,10 +95,10 @@ export function AnimatedHero() {
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-sm mb-8 backdrop-blur-sm">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-400/50 bg-black/40 text-purple-300 text-sm font-medium mb-8 backdrop-blur-md">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-400"></span>
           </span>
           One bridge. Every exchange.
         </div>
@@ -114,11 +114,28 @@ export function AnimatedHero() {
         </h1>
 
         {/* Subheadline */}
-        <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-6 leading-relaxed">
           Connect any MCP-compatible AI agent to crypto exchanges. 
           Get prices, place orders, and run strategies with natural language.
         </p>
 
+        {/* Stats Bar */}
+        <div className="flex items-center justify-center gap-4 sm:gap-8 text-sm flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">4</span>
+            <span className="text-gray-400">Exchanges</span>
+          </div>
+          <div className="w-px h-4 bg-gray-600 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">30+</span>
+            <span className="text-gray-400">Tools</span>
+          </div>
+          <div className="w-px h-4 bg-gray-600 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold">Open</span>
+            <span className="text-gray-400">Source</span>
+          </div>
+        </div>
       </div>
 
       {/* CSS for animations */}
