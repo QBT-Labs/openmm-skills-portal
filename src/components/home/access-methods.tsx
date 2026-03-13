@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Terminal, Plug, Code2, Cpu } from 'lucide-react'
+import { ArrowRight, Terminal, Plug, Cpu } from 'lucide-react'
 import Link from 'next/link'
 
 const accessMethods = [
@@ -25,13 +25,6 @@ const accessMethods = [
     href: '/docs/cli',
     cta: 'CLI Reference',
   },
-  {
-    icon: Code2,
-    title: 'API',
-    description: 'REST API for custom integrations. Build your own trading bots and dashboards.',
-    href: '/docs/api',
-    cta: 'API Docs',
-  },
 ]
 
 export function AccessMethods() {
@@ -50,7 +43,7 @@ export function AccessMethods() {
       </div>
 
       {/* Cards Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid sm:grid-cols-3 gap-6">
         {accessMethods.map((method) => (
           <Link
             key={method.title}

@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, Zap, Server, Terminal, Code, ArrowRight } from 'lucide-react'
+import { BookOpen, Zap, Server, Terminal, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 const docSections = [
@@ -24,14 +24,6 @@ const docSections = [
     description: 'Command-line tool documentation',
     href: '/docs/cli',
     time: '8 min',
-  },
-  {
-    icon: Code,
-    title: 'API Reference',
-    description: 'REST API documentation',
-    href: '#',
-    time: 'Coming soon',
-    disabled: true,
   },
 ]
 
@@ -63,34 +55,24 @@ export default function DocsPage() {
       {/* Doc Sections Grid */}
       <section className="mb-16">
         <h2 className="text-xl font-semibold mb-6">Guides</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {docSections.map((section) => (
             <Link
               key={section.title}
-              href={section.disabled ? '#' : section.href}
-              className={`bg-card border border-border rounded-lg p-6 transition-colors ${
-                section.disabled 
-                  ? 'opacity-50 cursor-not-allowed' 
-                  : 'hover:border-purple-500/50'
-              }`}
+              href={section.href}
+              className="bg-card border border-border rounded-lg p-6 transition-colors hover:border-purple-500/50"
             >
               <div className="flex items-start justify-between mb-4">
                 <section.icon className="w-8 h-8 text-purple-400" />
-                <span className={`text-xs px-2 py-1 rounded ${
-                  section.disabled 
-                    ? 'bg-secondary text-gray-500' 
-                    : 'bg-purple-500/20 text-purple-400'
-                }`}>
+                <span className="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400">
                   {section.time}
                 </span>
               </div>
               <h3 className="text-lg font-semibold mb-2">{section.title}</h3>
               <p className="text-gray-400 text-sm mb-4">{section.description}</p>
-              {!section.disabled && (
-                <span className="inline-flex items-center text-purple-400 text-sm">
-                  Read Guide <ArrowRight className="w-4 h-4 ml-1" />
-                </span>
-              )}
+              <span className="inline-flex items-center text-purple-400 text-sm">
+                Read Guide <ArrowRight className="w-4 h-4 ml-1" />
+              </span>
             </Link>
           ))}
         </div>

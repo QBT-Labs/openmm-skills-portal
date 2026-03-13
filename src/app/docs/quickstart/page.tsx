@@ -1,6 +1,6 @@
 'use client'
 
-import { Copy, Check, Clock, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Copy, Check, Clock, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 
@@ -38,36 +38,58 @@ function CodeBlock({ code, language = 'bash' }: { code: string; language?: strin
 const steps = [
   {
     step: 1,
-    title: 'Install the OpenMM Skills',
-    description: 'Add OpenMM tools to your agent with a single command',
-    code: 'npx skills add qbt-labs/openmm',
-    note: 'This installs all OpenMM skills: market-data, trading, and cardano',
+    title: 'Clone the Repository',
+    description: 'Get the OpenMM source code',
+    code: `git clone https://github.com/3rd-Eye-Labs/OpenMM.git
+cd OpenMM`,
+    note: 'This clones the repository and changes into the project directory',
   },
   {
     step: 2,
-    title: 'Configure Your Agent',
-    description: 'Add the MCP server to your agent configuration',
-    code: `{
-  "mcpServers": {
-    "openmm": {
-      "command": "npx",
-      "args": ["-y", "@qbt-labs/openmm-mcp"]
-    }
-  }
-}`,
-    note: 'Configuration varies by client — see MCP Setup for specific instructions',
-    language: 'json',
+    title: 'Install Dependencies',
+    description: 'Install the required Node.js packages',
+    code: 'npm install',
+    note: 'Requires Node.js 18+',
   },
   {
     step: 3,
-    title: 'Add Your API Keys',
-    description: 'Set exchange credentials as environment variables',
-    code: `export MEXC_API_KEY="your-api-key"
-export MEXC_SECRET="your-secret"`,
-    note: 'Only needed for trading operations. Market data works without keys.',
+    title: 'Configure Environment Variables',
+    description: 'Create your .env file with exchange API keys',
+    code: `cp .env.example .env`,
+    note: null,
   },
   {
     step: 4,
+    title: 'Add Your Exchange API Keys',
+    description: 'Edit the .env file with your credentials',
+    code: `# MEXC
+MEXC_API_KEY="your-mexc-api-key"
+MEXC_SECRET="your-mexc-secret"
+
+# Gate.io
+GATEIO_API_KEY="your-gateio-key"
+GATEIO_SECRET="your-gateio-secret"
+
+# Bitget
+BITGET_API_KEY="your-bitget-key"
+BITGET_SECRET="your-bitget-secret"
+BITGET_PASSPHRASE="your-bitget-passphrase"
+
+# Kraken
+KRAKEN_API_KEY="your-kraken-key"
+KRAKEN_SECRET="your-kraken-secret"`,
+    note: 'Only add keys for exchanges you want to use. Market data works without keys.',
+    language: 'env',
+  },
+  {
+    step: 5,
+    title: 'Initialize OpenMM',
+    description: 'Start the MCP server and verify connections',
+    code: 'npx openmm init',
+    note: '⚠️ This command requires the .env file to be configured first',
+  },
+  {
+    step: 6,
     title: 'Start Using OpenMM',
     description: 'Ask your agent to interact with exchanges',
     code: `"Get the BTC/USDT price on MEXC"
@@ -107,6 +129,20 @@ export default function QuickStartPage() {
         </p>
       </div>
 
+      {/* Important Note */}
+      <section className="mb-8">
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex gap-3">
+          <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-yellow-400 font-medium">Environment Variables Required</p>
+            <p className="text-yellow-400/80 text-sm mt-1">
+              <code className="bg-yellow-500/20 px-1 rounded">npx openmm init</code> requires exchange API keys in your <code className="bg-yellow-500/20 px-1 rounded">.env</code> file. 
+              Follow all steps below to configure properly.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Prerequisites */}
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">Prerequisites</h2>
@@ -122,7 +158,7 @@ export default function QuickStartPage() {
             </li>
             <li className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
-              <span>Exchange API keys (optional, only for trading)</span>
+              <span>Exchange API keys (required for trading, optional for market data)</span>
             </li>
           </ul>
         </div>
@@ -147,6 +183,31 @@ export default function QuickStartPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Alternative: Quick Install */}
+      <section className="mb-12">
+        <h2 className="text-xl font-semibold mb-4">Alternative: Global Install</h2>
+        <div className="bg-card border border-border rounded-lg p-6">
+          <p className="text-gray-400 mb-4">
+            If you prefer to install OpenMM globally:
+          </p>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-gray-500 mb-2">1. Install globally</p>
+              <CodeBlock code="npm install -g @3rd-eye-labs/openmm" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-2">2. Set environment variables in your shell profile (~/.zshrc or ~/.bashrc)</p>
+              <CodeBlock code={`export MEXC_API_KEY="your-key"
+export MEXC_SECRET="your-secret"`} />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-2">3. Initialize</p>
+              <CodeBlock code="openmm init" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -190,7 +251,7 @@ export default function QuickStartPage() {
             <ArrowRight className="w-5 h-5 text-purple-400" />
           </Link>
           <Link
-            href="/#skills"
+            href="/skills"
             className="flex items-center justify-between p-4 bg-secondary/50 hover:bg-secondary rounded-lg transition-colors"
           >
             <div>

@@ -7,8 +7,11 @@ import { Button } from '@/components/ui/button'
 import { AccessMethods } from '@/components/home/access-methods'
 import { SupportedExchanges } from '@/components/home/supported-exchanges'
 import { UseCases } from '@/components/home/use-cases'
+import { InteractiveTerminal } from '@/components/home/interactive-terminal'
+import { MCPClients } from '@/components/home/mcp-clients'
+import { PlugAndPlaySkills } from '@/components/home/plug-and-play-skills'
 
-const INSTALL_COMMAND = 'npx openmm init'
+const INSTALL_COMMAND = 'npx @qbtlabs/openmm-skills --all'
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -150,6 +153,15 @@ export default function Home() {
         </div>
       </section>
 
+      {/* MCP Clients Section */}
+      <MCPClients />
+
+      {/* Interactive Terminal Section */}
+      <InteractiveTerminal />
+
+      {/* Plug and Play Skills Section */}
+      <PlugAndPlaySkills />
+
       {/* Use Cases Section */}
       <UseCases />
 
@@ -176,7 +188,7 @@ export default function Home() {
           <div className="p-6 font-mono text-sm space-y-3">
             <div className="flex items-start gap-2">
               <span className="text-purple-400">$</span>
-              <span className="text-gray-300">npx openmm init</span>
+              <span className="text-gray-300">npx @qbtlabs/openmm-skills --all</span>
             </div>
             <div className="text-gray-500">✓ Connected to MEXC, Gate.io, Bitget, Kraken</div>
             <div className="text-gray-500">✓ 30 tools available</div>
