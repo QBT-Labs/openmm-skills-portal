@@ -84,7 +84,7 @@ export function AnimatedHero() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden min-h-[70vh] flex items-center justify-center">
+    <section className="relative overflow-hidden pt-24 pb-8 flex items-center justify-center">
       {/* Animated Orb Background */}
       <canvas
         ref={canvasRef}

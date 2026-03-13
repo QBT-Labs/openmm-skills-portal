@@ -63,7 +63,7 @@ export default function Home() {
       <AnimatedHero />
 
       {/* Install Command + CTA Section */}
-      <section className="max-w-5xl mx-auto px-4 -mt-8 pb-16 text-center relative z-20">
+      <section className="max-w-5xl mx-auto px-4 pt-6 pb-16 text-center relative z-20">
         {/* Install Command */}
         <div className="install-box inline-flex items-center gap-3 mb-8">
           <span className="text-gray-500">$</span>
