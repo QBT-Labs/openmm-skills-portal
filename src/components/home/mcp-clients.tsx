@@ -26,19 +26,14 @@ export function MCPClients() {
 
       <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-14">
         {clients.map((client) => (
-          <div key={client.name} className="flex flex-col items-center gap-3 group">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden opacity-90 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <Image
-                src={client.logo}
-                alt={`${client.name} logo`}
-                width={64}
-                height={64}
-                className="w-16 h-16"
-              />
-            </div>
-            <span className="text-sm text-gray-400 group-hover:text-white transition-colors">
-              {client.name}
-            </span>
+          <div key={client.name} className="opacity-90 hover:opacity-100 transition-opacity">
+            <Image
+              src={client.logo}
+              alt={`${client.name} logo`}
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+            />
           </div>
         ))}
       </div>
