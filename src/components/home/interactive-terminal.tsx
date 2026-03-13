@@ -6,18 +6,20 @@ import { Copy, Check, Play, RotateCcw } from 'lucide-react'
 const setupSteps = [
   {
     command: 'npm install -g @3rd-eye-labs/openmm',
-    output: ['added 38 packages in 3s', ''],
-    delay: 1000,
+    output: ['changed 39 packages in 3s'],
+    delay: 800,
   },
   {
     command: 'npx @3rd-eye-labs/openmm setup',
     output: [
       '',
-      '╔═══════════════════════════════════════════╗',
-      '║              OPENMM                       ║',
-      '║  AI-Native Market Making Infrastructure   ║',
-      '║  Configure your exchange API credentials  ║',
-      '╚═══════════════════════════════════════════╝',
+      '┌─────────────────────────────────────────┐',
+      '│  ░█▀█░█▀█░█▀▀░█▀█░█▄█░█▄█              │',
+      '│  ░█░█░█▀▀░█▀▀░█░█░█░█░█░█              │',
+      '│  ░▀▀▀░▀░░░▀▀▀░▀░▀░▀░▀░▀░▀              │',
+      '│  AI-Native Market Making Infrastructure │',
+      '│  Configure your exchange API credentials │',
+      '└─────────────────────────────────────────┘',
       '',
       'Which exchanges do you want to configure?',
       '  1. MEXC',
@@ -25,34 +27,76 @@ const setupSteps = [
       '  3. Kraken',
       '  4. Bitget',
       '',
-      'Your selection: 1,2,3,4',
+      'Enter numbers separated by commas (e.g., 1,2,3)',
+      'Or press Enter for all exchanges',
+      '',
+      'Your selection: 1',
       '',
       '🔑 MEXC credentials',
       '   Get your API key at: https://www.mexc.com/api',
       '   API Key: ********',
       '   Secret Key: ********',
       '',
-      '🔑 Gate.io credentials',
-      '   Get your API key at: https://www.gate.io/myaccount/api_key_manage',
-      '   API Key: ********',
-      '   Secret Key: ********',
-      '',
-      '🔑 Kraken credentials',
-      '   Get your API key at: https://www.kraken.com/u/security/api',
-      '   API Key: ********',
-      '   Private Key: ********',
-      '',
-      '🔑 Bitget credentials',
-      '   Get your API key at: https://www.bitget.com/account/newapi',
-      '   API Key: ********',
-      '   Secret Key: ********',
-      '   Passphrase: ********',
-      '',
       '✅ Credentials saved to .env',
       '',
       '💡 Try running: openmm balance --exchange mexc',
     ],
-    delay: 3000,
+    delay: 2500,
+  },
+  {
+    command: 'npm install -g @qbtlabs/openmm-mcp',
+    output: ['changed 129 packages in 3s'],
+    delay: 800,
+  },
+  {
+    command: 'npx @qbtlabs/openmm-mcp setup',
+    output: [
+      '',
+      'Which MCP clients do you want to configure?',
+      '  1. Claude Desktop',
+      '  2. Claude Code',
+      '  3. Cursor',
+      '  4. Windsurf',
+      '',
+      'Your selection: 2',
+      '',
+      '📁 Will configure 1 client(s):',
+      '   • Claude Code: ~/.claude/settings.json',
+      '',
+      '✅ OpenMM configured for Claude Code',
+      '🔄 Restart Claude Code to activate the changes.',
+      '',
+      '💡 Try asking your agent: "What is my balance on MEXC?"',
+    ],
+    delay: 2000,
+  },
+  {
+    command: 'npx @qbtlabs/openmm-skills --all',
+    output: [
+      '',
+      '┌─────────────────────────────────────────┐',
+      '│  ░█▀▀░█░█░▀█▀░█░░░█░░░█▀▀              │',
+      '│  ░▀▀█░█▀▄░░█░░█░░░█░░░▀▀█              │',
+      '│  ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀              │',
+      '│  QBT Labs — Open-source market making   │',
+      '└─────────────────────────────────────────┘',
+      '',
+      '◇ Source: https://github.com/QBT-Labs/OpenMM-ai.git',
+      '◇ Repository cloned',
+      '◇ Found 5 skills',
+      '● Installing all 5 skills',
+      '● Installing to all 41 agents',
+      '',
+      '◇ Installation Summary',
+      '  ├── openmm-exchange-setup',
+      '  ├── openmm-grid-trading',
+      '  ├── openmm-order-management',
+      '  ├── openmm-cardano-dex',
+      '  └── openmm-portfolio',
+      '',
+      '✅ All skills installed successfully!',
+    ],
+    delay: 2500,
   },
 ]
 
@@ -138,7 +182,7 @@ export function InteractiveTerminal() {
           }, step.delay)
         }, 300)
       }
-    }, 30)
+    }, 25)
 
     return () => clearInterval(typingInterval)
   }, [currentStep, isPlaying])
@@ -153,14 +197,16 @@ export function InteractiveTerminal() {
   const currentStepData = setupSteps[currentStep]
 
   const getLineColor = (line: string) => {
-    if (line.startsWith('✅') || line.startsWith('💡')) return 'text-green-400'
-    if (line.startsWith('🔑')) return 'text-yellow-400'
-    if (line.startsWith('╔') || line.startsWith('║') || line.startsWith('╚')) return 'text-cyan-400'
-    if (line.startsWith('Which exchanges') || line.startsWith('Your selection')) return 'text-green-400'
-    if (line.includes('MEXC') || line.includes('Gate.io') || line.includes('Kraken') || line.includes('Bitget')) return 'text-white'
-    if (line.includes('Get your API')) return 'text-gray-400'
-    if (line.includes('API Key:') || line.includes('Secret') || line.includes('Private') || line.includes('Passphrase')) return 'text-gray-500'
-    if (line.startsWith('added')) return 'text-green-400'
+    if (line.startsWith('✅')) return 'text-green-400'
+    if (line.startsWith('💡') || line.startsWith('●')) return 'text-yellow-400'
+    if (line.startsWith('🔑') || line.startsWith('📁')) return 'text-cyan-400'
+    if (line.startsWith('🔄')) return 'text-blue-400'
+    if (line.startsWith('◇')) return 'text-purple-400'
+    if (line.startsWith('┌') || line.startsWith('│') || line.startsWith('└') || line.startsWith('├') || line.startsWith('░')) return 'text-green-500'
+    if (line.startsWith('Which') || line.startsWith('Enter') || line.startsWith('Or press') || line.startsWith('Your selection')) return 'text-green-400'
+    if (line.includes('MEXC') || line.includes('Gate.io') || line.includes('Kraken') || line.includes('Bitget') || line.includes('Claude') || line.includes('Cursor') || line.includes('Windsurf')) return 'text-white'
+    if (line.includes('Get your API') || line.includes('API Key:') || line.includes('Secret') || line.includes('Will configure')) return 'text-gray-400'
+    if (line.startsWith('changed')) return 'text-green-400'
     return 'text-gray-400'
   }
 
@@ -198,7 +244,7 @@ export function InteractiveTerminal() {
         </div>
         
         {/* Terminal content */}
-        <div className="p-6 font-mono text-sm bg-[#0d0d1a] min-h-[400px] max-h-[500px] overflow-y-auto">
+        <div className="p-6 font-mono text-sm bg-[#0d0d1a] min-h-[420px] max-h-[520px] overflow-y-auto">
           {/* Completed steps */}
           {completedSteps.map((stepIndex) => (
             <div key={stepIndex} className="mb-4">
@@ -263,14 +309,14 @@ export function InteractiveTerminal() {
           <div className="text-xs text-gray-500 mb-2">CLI</div>
           <div className="flex items-center justify-between">
             <code className="text-purple-400 text-xs truncate mr-2">npm i -g @3rd-eye-labs/openmm</code>
-            <CopyButton text="npm install -g @3rd-eye-labs/openmm" />
+            <CopyButton text="npm install -g @3rd-eye-labs/openmm && npx @3rd-eye-labs/openmm setup" />
           </div>
         </div>
         <div className="bg-card/50 border border-border rounded-lg p-4">
           <div className="text-xs text-gray-500 mb-2">MCP Server</div>
           <div className="flex items-center justify-between">
             <code className="text-purple-400 text-xs truncate mr-2">npm i -g @qbtlabs/openmm-mcp</code>
-            <CopyButton text="npm install -g @qbtlabs/openmm-mcp" />
+            <CopyButton text="npm install -g @qbtlabs/openmm-mcp && npx @qbtlabs/openmm-mcp setup" />
           </div>
         </div>
         <div className="bg-card/50 border border-border rounded-lg p-4">
