@@ -14,9 +14,18 @@ const setupSteps = [
     output: [
       '',
       '┌─────────────────────────────────────────┐',
-      '│  ░█▀█░█▀█░█▀▀░█▀█░█▄█░█▄█              │',
-      '│  ░█░█░█▀▀░█▀▀░█░█░█░█░█░█              │',
-      '│  ░▀▀▀░▀░░░▀▀▀░▀░▀░▀░▀░▀░▀              │',
+      '│  ██████╗ ██████╗ ███████╗███╗   ██╗    │',
+      '│ ██╔═══██╗██╔══██╗██╔════╝████╗  ██║    │',
+      '│ ██║   ██║██████╔╝█████╗  ██╔██╗ ██║    │',
+      '│ ██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║    │',
+      '│ ╚██████╔╝██║     ███████╗██║ ╚████║    │',
+      '│  ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝    │',
+      '│           ███╗   ███╗███╗   ███╗       │',
+      '│           ████╗ ████║████╗ ████║       │',
+      '│           ██╔████╔██║██╔████╔██║       │',
+      '│           ██║╚██╔╝██║██║╚██╔╝██║       │',
+      '│           ██║ ╚═╝ ██║██║ ╚═╝ ██║       │',
+      '│           ╚═╝     ╚═╝╚═╝     ╚═╝       │',
       '│  AI-Native Market Making Infrastructure │',
       '│  Configure your exchange API credentials │',
       '└─────────────────────────────────────────┘',
@@ -75,11 +84,14 @@ const setupSteps = [
     output: [
       '',
       '┌─────────────────────────────────────────┐',
-      '│  ░█▀▀░█░█░▀█▀░█░░░█░░░█▀▀              │',
-      '│  ░▀▀█░█▀▄░░█░░█░░░█░░░▀▀█              │',
-      '│  ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀              │',
-      '│  QBT Labs — Open-source market making   │',
-      '└─────────────────────────────────────────┘',
+      '│  ███████╗██╗  ██╗██╗██╗     ██╗     ███████╗ │',
+      '│  ██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝ │',
+      '│  ███████╗█████╔╝ ██║██║     ██║     ███████╗ │',
+      '│  ╚════██║██╔═██╗ ██║██║     ██║     ╚════██║ │',
+      '│  ███████║██║  ██╗██║███████╗███████╗███████║ │',
+      '│  ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝ │',
+      '│  QBT Labs — Open-source market making        │',
+      '└─────────────────────────────────────────────┘',
       '',
       '◇ Source: https://github.com/QBT-Labs/OpenMM-ai.git',
       '◇ Repository cloned',
@@ -202,7 +214,7 @@ export function InteractiveTerminal() {
     if (line.startsWith('🔑') || line.startsWith('📁')) return 'text-cyan-400'
     if (line.startsWith('🔄')) return 'text-blue-400'
     if (line.startsWith('◇')) return 'text-purple-400'
-    if (line.startsWith('┌') || line.startsWith('│') || line.startsWith('└') || line.startsWith('├') || line.startsWith('░')) return 'text-green-500'
+    if (line.includes('┌') || line.includes('│') || line.includes('└') || line.includes('├') || line.includes('╔') || line.includes('║') || line.includes('╚') || line.includes('╝') || line.includes('╗') || line.includes('═') || line.includes('█') || line.includes('██') || line.includes('███')) return 'text-green-500'
     if (line.startsWith('Which') || line.startsWith('Enter') || line.startsWith('Or press') || line.startsWith('Your selection')) return 'text-green-400'
     if (line.includes('MEXC') || line.includes('Gate.io') || line.includes('Kraken') || line.includes('Bitget') || line.includes('Claude') || line.includes('Cursor') || line.includes('Windsurf')) return 'text-white'
     if (line.includes('Get your API') || line.includes('API Key:') || line.includes('Secret') || line.includes('Will configure')) return 'text-gray-400'
@@ -255,7 +267,7 @@ export function InteractiveTerminal() {
               </div>
               <div className="ml-4 mt-1 space-y-0.5">
                 {setupSteps[stepIndex].output.map((line, i) => (
-                  <div key={i} className={`text-xs ${getLineColor(line)}`}>
+                  <div key={i} className={`text-xs whitespace-pre ${getLineColor(line)}`}>
                     {line || '\u00A0'}
                   </div>
                 ))}
@@ -276,7 +288,7 @@ export function InteractiveTerminal() {
               {showOutput && (
                 <div className="ml-4 mt-1 space-y-0.5">
                   {currentStepData.output.map((line, i) => (
-                    <div key={i} className={`text-xs ${getLineColor(line)}`}>
+                    <div key={i} className={`text-xs whitespace-pre ${getLineColor(line)}`}>
                       {line || '\u00A0'}
                     </div>
                   ))}
