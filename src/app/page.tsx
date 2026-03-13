@@ -10,7 +10,7 @@ import { UseCases } from '@/components/home/use-cases'
 import { InteractiveTerminal } from '@/components/home/interactive-terminal'
 import { MCPClients } from '@/components/home/mcp-clients'
 import { PlugAndPlaySkills } from '@/components/home/plug-and-play-skills'
-import { AnimatedOrb } from '@/components/home/animated-orb'
+import { AnimatedHero } from '@/components/home/animated-hero'
 
 const INSTALL_COMMAND = 'npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp'
 
@@ -59,84 +59,32 @@ const features = [
 export default function Home() {
   return (
     <div className="min-h-[calc(100vh-4rem)]">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Gradient background effect */}
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-purple-500/20 rounded-full blur-[128px] pointer-events-none" />
-        
-        <div className="relative max-w-5xl mx-auto px-4 pt-24 pb-20 text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-sm mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-            </span>
-            Now with Cardano DEX support
-          </div>
+      {/* Animated Hero with Orb Background */}
+      <AnimatedHero />
 
-          {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-            <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
-              AI Trading Tools
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              For Your Agent
-            </span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Connect any MCP-compatible AI agent to crypto exchanges. 
-            Get prices, place orders, and run strategies with natural language.
-          </p>
-
-          {/* Stats Bar */}
-          <div className="flex items-center justify-center gap-4 sm:gap-8 text-sm mb-10 flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="text-white font-semibold">4</span>
-              <span className="text-gray-500">Exchanges</span>
-            </div>
-            <div className="w-px h-4 bg-border hidden sm:block" />
-            <div className="flex items-center gap-2">
-              <span className="text-white font-semibold">30+</span>
-              <span className="text-gray-500">Tools</span>
-            </div>
-            <div className="w-px h-4 bg-border hidden sm:block" />
-            <div className="flex items-center gap-2">
-              <span className="text-white font-semibold">Open</span>
-              <span className="text-gray-500">Source</span>
-            </div>
-          </div>
-
-          {/* Install Command */}
-          <div className="install-box inline-flex items-center gap-3 mb-10">
-            <span className="text-gray-500">$</span>
-            <code className="text-purple-400 font-medium">{INSTALL_COMMAND}</code>
-            <CopyButton text={INSTALL_COMMAND} />
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/skills">
-              <Button size="lg" className="w-full sm:w-auto gap-2">
-                Browse Skills
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-            <Link href="/docs">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                Read the Docs
-              </Button>
-            </Link>
-          </div>
+      {/* Install Command + CTA Section */}
+      <section className="max-w-5xl mx-auto px-4 -mt-10 pb-16 text-center relative z-20">
+        {/* Install Command */}
+        <div className="install-box inline-flex items-center gap-3 mb-8">
+          <span className="text-gray-500">$</span>
+          <code className="text-purple-400 font-medium">{INSTALL_COMMAND}</code>
+          <CopyButton text={INSTALL_COMMAND} />
         </div>
-      </section>
 
-      {/* Animated Orb Section */}
-      <section className="py-8">
-        <AnimatedOrb />
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/skills">
+            <Button size="lg" className="w-full sm:w-auto gap-2">
+              Browse Skills
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+          <Link href="/docs">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto">
+              Read the Docs
+            </Button>
+          </Link>
+        </div>
       </section>
 
       {/* Interactive Terminal Section - Right after Browse Skills */}
