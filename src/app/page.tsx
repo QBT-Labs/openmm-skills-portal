@@ -188,19 +188,28 @@ export default function Home() {
           <div className="p-6 font-mono text-sm space-y-3">
             <div className="flex items-start gap-2">
               <span className="text-purple-400">$</span>
-              <span className="text-gray-300">npx @qbtlabs/openmm-skills --all</span>
+              <span className="text-gray-300">npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp</span>
             </div>
-            <div className="text-gray-500">✓ Connected to MEXC, Gate.io, Bitget, Kraken</div>
+            <div className="text-gray-500">✓ Installed OpenMM CLI and MCP server</div>
+            <div className="mt-3 flex items-start gap-2">
+              <span className="text-purple-400">$</span>
+              <span className="text-gray-300">npx @3rd-eye-labs/openmm setup</span>
+            </div>
+            <div className="text-gray-500">✓ Configured MEXC, Gate.io, Bitget, Kraken</div>
+            <div className="mt-3 flex items-start gap-2">
+              <span className="text-purple-400">$</span>
+              <span className="text-gray-300">npx @qbtlabs/openmm-mcp setup</span>
+            </div>
+            <div className="text-gray-500">✓ Configured Claude Code, Cursor, Windsurf</div>
             <div className="text-gray-500">✓ 30 tools available</div>
-            <div className="text-gray-500">✓ MCP server ready on port 3000</div>
             <div className="mt-4 pt-4 border-t border-border/50">
               <div className="flex items-start gap-2">
                 <span className="text-green-400">Agent:</span>
-                <span className="text-gray-300">&quot;What&apos;s the BTC/USDT price on MEXC?&quot;</span>
+                <span className="text-gray-300">&quot;What&apos;s my total balance across all exchanges?&quot;</span>
               </div>
               <div className="flex items-start gap-2 mt-2">
                 <span className="text-purple-400">OpenMM:</span>
-                <span className="text-gray-300">$97,234.50 (24h: +2.3%)</span>
+                <span className="text-gray-300">$12,450.32 across 4 exchanges (MEXC: $8,200, Gate.io: $2,100...)</span>
               </div>
             </div>
           </div>
