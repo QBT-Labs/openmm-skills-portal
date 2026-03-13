@@ -10,6 +10,7 @@ import { UseCases } from '@/components/home/use-cases'
 import { InteractiveTerminal } from '@/components/home/interactive-terminal'
 import { MCPClients } from '@/components/home/mcp-clients'
 import { PlugAndPlaySkills } from '@/components/home/plug-and-play-skills'
+import { AnimatedOrb } from '@/components/home/animated-orb'
 
 const INSTALL_COMMAND = 'npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp'
 
@@ -131,6 +132,11 @@ export default function Home() {
             </Link>
           </div>
         </div>
+      </section>
+
+      {/* Animated Orb Section */}
+      <section className="py-8">
+        <AnimatedOrb />
       </section>
 
       {/* Interactive Terminal Section - Right after Browse Skills */}
