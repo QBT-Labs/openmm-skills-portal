@@ -159,10 +159,19 @@ export default function CLIPage() {
         <h2 className="text-xl font-semibold mb-4">Installation</h2>
         <div className="bg-card border border-border rounded-lg p-6">
           <p className="text-gray-400 mb-4">Install OpenMM globally:</p>
-          <CodeBlock code="npm install -g @qbt-labs/openmm" />
+          <CodeBlock code="npm install -g @3rd-eye-labs/openmm" />
           <p className="text-sm text-gray-500 mt-4">
-            Or use npx to run without installing: <code className="text-purple-400">npx @qbt-labs/openmm &lt;command&gt;</code>
+            Or use npx to run without installing: <code className="text-purple-400">npx @3rd-eye-labs/openmm &lt;command&gt;</code>
           </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Run the setup wizard to configure your exchange credentials:
+          </p>
+          <div className="install-box flex items-center justify-between mt-2">
+            <pre className="text-sm overflow-x-auto">
+              <code className="text-purple-400">npx @3rd-eye-labs/openmm setup</code>
+            </pre>
+            <CopyButton text="npx @3rd-eye-labs/openmm setup" />
+          </div>
         </div>
       </section>
 
