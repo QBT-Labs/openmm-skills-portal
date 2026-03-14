@@ -6,11 +6,13 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38bdf8)](https://tailwindcss.com/)
 
+**🤖 [agents.openmm.io](https://agents.openmm.io)** · **📚 [docs.openmm.io](https://docs.openmm.io)** · **🔌 [api.openmm.io](https://api.openmm.io)**
+
 ## Overview
 
 OpenMM Skills Portal is the public-facing documentation and skills directory for [OpenMM](https://github.com/3rd-Eye-Labs/OpenMM) — open-source market making tools for AI agents.
 
-**Live at:** [skills.openmm.io](https://skills.openmm.io) *(coming soon)*
+**Live at:** [agents.openmm.io](https://agents.openmm.io)
 
 ## Features
 
