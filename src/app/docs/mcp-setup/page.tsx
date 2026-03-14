@@ -294,6 +294,50 @@ export default function MCPSetupPage() {
         </div>
       </section>
 
+      {/* Config File Paths */}
+      <section className="mb-12">
+        <h2 className="text-xl font-semibold mb-6">Config File Paths</h2>
+        <p className="text-gray-400 text-sm mb-4">
+          The setup wizard writes to these files. Useful for manual editing or debugging:
+        </p>
+        <div className="bg-card border border-border rounded-lg overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-secondary/30">
+                <th className="text-left py-3 px-4 font-medium">Client</th>
+                <th className="text-left py-3 px-4 font-medium">Config File Path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4">Cursor</td>
+                <td className="py-3 px-4"><code className="text-purple-400">~/.cursor/mcp.json</code></td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4">Claude Desktop (macOS)</td>
+                <td className="py-3 px-4"><code className="text-purple-400 text-xs">~/Library/Application Support/Claude/claude_desktop_config.json</code></td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4">Claude Desktop (Windows)</td>
+                <td className="py-3 px-4"><code className="text-purple-400 text-xs">%APPDATA%/Claude/claude_desktop_config.json</code></td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4">Claude Code</td>
+                <td className="py-3 px-4"><code className="text-purple-400">~/.claude/settings.json</code></td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4">Windsurf</td>
+                <td className="py-3 px-4"><code className="text-purple-400">~/.codeium/windsurf/mcp_config.json</code></td>
+              </tr>
+              <tr>
+                <td className="py-3 px-4">OpenClaw</td>
+                <td className="py-3 px-4"><code className="text-purple-400">~/.claude/settings.json</code> <span className="text-gray-500">(same as Claude Code)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* Next Steps */}
       <section className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-8 text-center">
         <h2 className="text-xl font-semibold mb-2">Ready to Trade</h2>
