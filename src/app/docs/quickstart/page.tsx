@@ -1,6 +1,6 @@
 'use client'
 
-import { Copy, Check, Clock, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react'
+import { Copy, Check, Clock, CheckCircle2, ArrowRight, Zap } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 
@@ -24,81 +24,21 @@ function CopyButton({ text }: { text: string }) {
   )
 }
 
-function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
+function CodeBlock({ code, label }: { code: string; label?: string }) {
   return (
-    <div className="install-box flex items-center justify-between">
-      <pre className="text-sm overflow-x-auto">
-        <code className="text-purple-400">{code}</code>
-      </pre>
-      <CopyButton text={code} />
+    <div className="bg-gray-900 rounded-lg border border-gray-700">
+      {label && (
+        <div className="px-4 py-2 border-b border-gray-700 text-xs text-gray-400">{label}</div>
+      )}
+      <div className="flex items-center justify-between p-4">
+        <pre className="text-sm overflow-x-auto">
+          <code className="text-green-400">{code}</code>
+        </pre>
+        <CopyButton text={code} />
+      </div>
     </div>
   )
 }
-
-const steps = [
-  {
-    step: 1,
-    title: 'Clone the Repository',
-    description: 'Get the OpenMM source code',
-    code: `git clone https://github.com/3rd-Eye-Labs/OpenMM.git
-cd OpenMM`,
-    note: 'This clones the repository and changes into the project directory',
-  },
-  {
-    step: 2,
-    title: 'Install Dependencies',
-    description: 'Install the required Node.js packages',
-    code: 'npm install',
-    note: 'Requires Node.js 18+',
-  },
-  {
-    step: 3,
-    title: 'Configure Environment Variables',
-    description: 'Create your .env file with exchange API keys',
-    code: `cp .env.example .env`,
-    note: null,
-  },
-  {
-    step: 4,
-    title: 'Add Your Exchange API Keys',
-    description: 'Edit the .env file with your credentials',
-    code: `# MEXC
-MEXC_API_KEY="your-mexc-api-key"
-MEXC_SECRET="your-mexc-secret"
-
-# Gate.io
-GATEIO_API_KEY="your-gateio-key"
-GATEIO_SECRET="your-gateio-secret"
-
-# Bitget
-BITGET_API_KEY="your-bitget-key"
-BITGET_SECRET="your-bitget-secret"
-BITGET_PASSPHRASE="your-bitget-passphrase"
-
-# Kraken
-KRAKEN_API_KEY="your-kraken-key"
-KRAKEN_SECRET="your-kraken-secret"`,
-    note: 'Only add keys for exchanges you want to use. Market data works without keys.',
-    language: 'env',
-  },
-  {
-    step: 5,
-    title: 'Initialize OpenMM',
-    description: 'Start the MCP server and verify connections',
-    code: 'npx openmm init',
-    note: '⚠️ This command requires the .env file to be configured first',
-  },
-  {
-    step: 6,
-    title: 'Start Using OpenMM',
-    description: 'Ask your agent to interact with exchanges',
-    code: `"Get the BTC/USDT price on MEXC"
-"Show my balances across all exchanges"
-"What's the orderbook for ETH/USDT?"`,
-    note: 'Your agent now has access to 30+ trading tools',
-    language: 'text',
-  },
-]
 
 const availableTools = [
   { name: 'openmm_ticker', description: 'Get price, bid/ask, spread, 24h volume' },
@@ -121,27 +61,13 @@ export default function QuickStartPage() {
         </Link>
         <div className="flex items-center gap-3 mb-4">
           <Clock className="w-6 h-6 text-purple-400" />
-          <span className="text-sm text-purple-400 bg-purple-500/20 px-2 py-1 rounded">5 minute setup</span>
+          <span className="text-sm text-purple-400 bg-purple-500/20 px-2 py-1 rounded">2 minute setup</span>
         </div>
         <h1 className="text-4xl font-bold mb-4">Quick Start Guide</h1>
         <p className="text-xl text-gray-400">
-          Get your AI agent trading in 5 minutes
+          Get your AI agent trading in 2 minutes with the setup wizard
         </p>
       </div>
-
-      {/* Important Note */}
-      <section className="mb-8">
-        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex gap-3">
-          <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-yellow-400 font-medium">Environment Variables Required</p>
-            <p className="text-yellow-400/80 text-sm mt-1">
-              <code className="bg-yellow-500/20 px-1 rounded">npx openmm init</code> requires exchange API keys in your <code className="bg-yellow-500/20 px-1 rounded">.env</code> file. 
-              Follow all steps below to configure properly.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* Prerequisites */}
       <section className="mb-12">
@@ -154,60 +80,101 @@ export default function QuickStartPage() {
             </li>
             <li className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
-              <span>An MCP-compatible AI agent (Claude Desktop, Cursor, OpenClaw, etc.)</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
-              <span>Exchange API keys (required for trading, optional for market data)</span>
+              <span>Exchange API keys (MEXC, Gate.io, Bitget, or Kraken)</span>
             </li>
           </ul>
         </div>
       </section>
 
-      {/* Steps */}
+      {/* Quick Start - 2 Steps */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-6">Setup Steps</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <Zap className="w-6 h-6 text-yellow-400" />
+          <h2 className="text-xl font-semibold">Quick Start (2 Steps)</h2>
+        </div>
+        
         <div className="space-y-8">
-          {steps.map((step) => (
-            <div key={step.step} className="relative pl-8 border-l-2 border-border">
-              <div className="absolute -left-3 top-0 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
-                {step.step}
+          {/* Step 1 */}
+          <div className="relative pl-8 border-l-2 border-purple-500">
+            <div className="absolute -left-3 top-0 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
+              1
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-2">Install & Setup</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Install OpenMM globally and run the interactive setup wizard
+              </p>
+              <div className="space-y-3">
+                <CodeBlock code="npm install -g @3rd-eye-labs/openmm" label="Install" />
+                <CodeBlock code="npx @3rd-eye-labs/openmm setup" label="Setup Wizard" />
               </div>
-              <div className="bg-card border border-border rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-                <p className="text-gray-400 text-sm mb-4">{step.description}</p>
-                <CodeBlock code={step.code} language={step.language} />
-                {step.note && (
-                  <p className="text-sm text-gray-500 mt-3">💡 {step.note}</p>
-                )}
+              <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                <p className="text-sm text-purple-300">
+                  <strong>The setup wizard will:</strong>
+                </p>
+                <ul className="text-sm text-purple-300/80 mt-2 space-y-1 list-disc list-inside">
+                  <li>Let you select exchanges (MEXC, Gate.io, Kraken, Bitget)</li>
+                  <li>Prompt for your API credentials</li>
+                  <li>Create a <code className="bg-purple-500/20 px-1 rounded">.env</code> file automatically</li>
+                </ul>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Step 2 */}
+          <div className="relative pl-8 border-l-2 border-purple-500">
+            <div className="absolute -left-3 top-0 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
+              2
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-2">Verify Installation</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Check that everything works by fetching your balance
+              </p>
+              <CodeBlock code="openmm balance --exchange mexc" />
+              <p className="text-sm text-gray-500 mt-3">
+                ✅ If you see your balances, you're ready to go!
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Alternative: Quick Install */}
+      {/* MCP Setup */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Alternative: Global Install</h2>
+        <h2 className="text-xl font-semibold mb-4">For AI Agents (MCP)</h2>
         <div className="bg-card border border-border rounded-lg p-6">
           <p className="text-gray-400 mb-4">
-            If you prefer to install OpenMM globally:
+            To use OpenMM with Claude Desktop, Cursor, or other MCP clients:
           </p>
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-gray-500 mb-2">1. Install globally</p>
-              <CodeBlock code="npm install -g @3rd-eye-labs/openmm" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 mb-2">2. Set environment variables in your shell profile (~/.zshrc or ~/.bashrc)</p>
-              <CodeBlock code={`export MEXC_API_KEY="your-key"
-export MEXC_SECRET="your-secret"`} />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 mb-2">3. Initialize</p>
-              <CodeBlock code="openmm init" />
-            </div>
+          <div className="space-y-3">
+            <CodeBlock code="npm install -g @qbtlabs/openmm-mcp" label="Install MCP Server" />
+            <CodeBlock code="npx @qbtlabs/openmm-mcp setup" label="Configure MCP Client" />
           </div>
+          <p className="text-sm text-gray-500 mt-4">
+            The setup will configure your MCP client automatically. See{' '}
+            <Link href="/docs/mcp-setup" className="text-purple-400 hover:underline">MCP Setup Guide</Link>{' '}
+            for client-specific instructions.
+          </p>
+        </div>
+      </section>
+
+      {/* API Server */}
+      <section className="mb-12">
+        <h2 className="text-xl font-semibold mb-4">REST API Server</h2>
+        <div className="bg-card border border-border rounded-lg p-6">
+          <p className="text-gray-400 mb-4">
+            Start the HTTP API server for web integrations:
+          </p>
+          <CodeBlock code="openmm serve --port 3000" />
+          <div className="mt-4 flex gap-4 text-sm">
+            <span className="text-gray-400">Swagger UI:</span>
+            <code className="text-purple-400">http://localhost:3000/docs</code>
+          </div>
+          <p className="text-sm text-gray-500 mt-4">
+            See <Link href="/docs/api-reference" className="text-purple-400 hover:underline">API Reference</Link>{' '}
+            for all 18 endpoints.
+          </p>
         </div>
       </section>
 
@@ -239,14 +206,24 @@ export MEXC_SECRET="your-secret"`} />
       {/* Next Steps */}
       <section className="bg-card border border-border rounded-lg p-8">
         <h2 className="text-xl font-semibold mb-4">Next Steps</h2>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
           <Link
             href="/docs/mcp-setup"
             className="flex items-center justify-between p-4 bg-secondary/50 hover:bg-secondary rounded-lg transition-colors"
           >
             <div>
-              <div className="font-medium">MCP Setup Guide</div>
-              <div className="text-sm text-gray-400">Detailed client-specific instructions</div>
+              <div className="font-medium">MCP Setup</div>
+              <div className="text-sm text-gray-400">Configure AI clients</div>
+            </div>
+            <ArrowRight className="w-5 h-5 text-purple-400" />
+          </Link>
+          <Link
+            href="/docs/api-reference"
+            className="flex items-center justify-between p-4 bg-secondary/50 hover:bg-secondary rounded-lg transition-colors"
+          >
+            <div>
+              <div className="font-medium">API Reference</div>
+              <div className="text-sm text-gray-400">18 REST endpoints</div>
             </div>
             <ArrowRight className="w-5 h-5 text-purple-400" />
           </Link>
@@ -256,7 +233,7 @@ export MEXC_SECRET="your-secret"`} />
           >
             <div>
               <div className="font-medium">Browse Skills</div>
-              <div className="text-sm text-gray-400">See all available skill packages</div>
+              <div className="text-sm text-gray-400">Skill packages</div>
             </div>
             <ArrowRight className="w-5 h-5 text-purple-400" />
           </Link>
