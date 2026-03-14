@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, Zap, Server, Terminal, ArrowRight } from 'lucide-react'
+import { BookOpen, Zap, Server, Terminal, ArrowRight, Code } from 'lucide-react'
 import Link from 'next/link'
 
 const docSections = [
@@ -19,6 +19,13 @@ const docSections = [
     time: '10 min',
   },
   {
+    icon: Code,
+    title: 'API Reference',
+    description: 'REST API endpoints for trading and market data',
+    href: '/docs/api-reference',
+    time: '15 min',
+  },
+  {
     icon: Terminal,
     title: 'CLI Reference',
     description: 'Command-line tool documentation',
@@ -31,8 +38,8 @@ const quickLinks = [
   { title: 'OpenClaw Setup Guide', href: '/docs/openclaw' },
   { title: 'Cross-Skill Workflows', href: '/docs/workflows' },
   { title: 'Prompt Library', href: '/prompts' },
+  { title: 'Full API Documentation', href: 'https://docs.openmm.io', external: true },
   { title: 'GitHub Repository', href: 'https://github.com/3rd-Eye-Labs/OpenMM', external: true },
-  { title: 'CLI Reference (GitHub)', href: 'https://github.com/3rd-Eye-Labs/OpenMM/blob/main/docs/CLI.md', external: true },
 ]
 
 export default function DocsPage() {
