@@ -72,26 +72,83 @@ export default function OpenClawGuidePage() {
         </ul>
       </section>
 
+      {/* Two Options */}
+      <section className="mb-12">
+        <h2 className="text-xl font-semibold mb-6">Choose Your Setup Method</h2>
+        
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-6">
+            <h3 className="font-semibold text-green-400 mb-2">Option A: OpenClaw Plugin (Easiest)</h3>
+            <p className="text-sm text-gray-400">Full integration with built-in tools. Recommended for most users.</p>
+          </div>
+          <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6">
+            <h3 className="font-semibold text-purple-400 mb-2">Option B: Skills via ClawHub</h3>
+            <p className="text-sm text-gray-400">Modular skills for specific features. Mix and match what you need.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Option A: Plugin */}
       <section className="mb-12 space-y-6">
-        <h2 className="text-xl font-semibold mb-6">Setup Steps</h2>
-        <StepCard number={1} title="Install the OpenMM Skill">
-          <p>One command to add OpenMM to your OpenClaw instance:</p>
-          <CodeBlock code="openclaw skills add qbt-labs/openmm" filename="Terminal" />
+        <h2 className="text-xl font-semibold mb-6">Option A: Install OpenClaw Plugin</h2>
+        
+        <StepCard number={1} title="Install the OpenMM CLI">
+          <p>First, install the OpenMM CLI globally:</p>
+          <CodeBlock code="npm install -g @3rd-eye-labs/openmm" filename="Terminal" />
         </StepCard>
-        <StepCard number={2} title="Configure Your Exchange API Keys">
-          <p>Add your exchange credentials to your shell profile:</p>
-          <CodeBlock code={`# Add to ~/.zshrc or ~/.bashrc\nexport MEXC_API_KEY="your-api-key"\nexport MEXC_SECRET="your-secret"\n\n# Gate.io\nexport GATEIO_API_KEY="your-api-key"\nexport GATEIO_SECRET="your-secret"\n\n# Bitget\nexport BITGET_API_KEY="your-api-key"\nexport BITGET_SECRET="your-secret"\nexport BITGET_PASSPHRASE="your-passphrase"\n\n# Kraken\nexport KRAKEN_API_KEY="your-api-key"\nexport KRAKEN_SECRET="your-secret"`} filename="~/.zshrc" />
+
+        <StepCard number={2} title="Run the Setup Wizard">
+          <p>The interactive wizard configures your exchange API credentials:</p>
+          <CodeBlock code="openmm setup" filename="Terminal" />
+          <p className="text-sm">This will prompt you for your API keys and securely store them.</p>
         </StepCard>
-        <StepCard number={3} title="Restart OpenClaw Gateway">
-          <p>Apply the new configuration:</p>
+
+        <StepCard number={3} title="Install the OpenClaw Plugin">
+          <p>Add the OpenMM plugin to OpenClaw:</p>
+          <CodeBlock code="openclaw plugins install @qbtlabs/openclaw-openmm" filename="Terminal" />
+        </StepCard>
+
+        <StepCard number={4} title="Restart OpenClaw">
           <CodeBlock code="openclaw gateway restart" filename="Terminal" />
         </StepCard>
-        <StepCard number={4} title="Test Your Connection">
+      </section>
+
+      {/* Option B: Skills */}
+      <section className="mb-12 space-y-6">
+        <h2 className="text-xl font-semibold mb-6">Option B: Install Skills via ClawHub</h2>
+        
+        <StepCard number={1} title="Install the OpenMM CLI & Configure">
+          <p>Install the CLI and run the setup wizard:</p>
+          <CodeBlock code={`npm install -g @3rd-eye-labs/openmm
+openmm setup`} filename="Terminal" />
+        </StepCard>
+
+        <StepCard number={2} title="Install OpenMM Skills">
+          <p>Install the skills you need:</p>
+          <CodeBlock code={`clawhub install openmm-exchange-setup
+clawhub install openmm-grid-trading
+clawhub install openmm-portfolio
+clawhub install openmm-order-management
+clawhub install openmm-cardano-dex`} filename="Terminal" />
+          <p className="text-sm">Or install all at once with the skills installer:</p>
+          <CodeBlock code="npx @qbtlabs/openmm-skills --all" filename="Terminal" />
+        </StepCard>
+
+        <StepCard number={3} title="Restart OpenClaw">
+          <CodeBlock code="openclaw gateway restart" filename="Terminal" />
+        </StepCard>
+      </section>
+
+      {/* Test */}
+      <section className="mb-12 space-y-6">
+        <h2 className="text-xl font-semibold mb-6">Test Your Setup</h2>
+        
+        <StepCard number={1} title="Verify Connection">
           <p>Open a chat with your OpenClaw agent and try:</p>
           <div className="bg-secondary/50 rounded-lg p-3 text-purple-400">&quot;Get the BTC/USDT price on MEXC&quot;</div>
         </StepCard>
-        <StepCard number={5} title="Explore More Commands">
-          <p>Now try these powerful prompts:</p>
+
+        <StepCard number={2} title="Try More Commands">
           <div className="space-y-2">
             <div className="bg-secondary/50 rounded-lg p-3 text-purple-400 text-sm">&quot;Show me my total portfolio value across all exchanges&quot;</div>
             <div className="bg-secondary/50 rounded-lg p-3 text-purple-400 text-sm">&quot;Find tokens with &gt;2% price difference between MEXC and Gate.io&quot;</div>
@@ -101,23 +158,38 @@ export default function OpenClawGuidePage() {
       </section>
 
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-6">Available Tools</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {[
-            { name: 'openmm_ticker', desc: 'Get price, bid/ask, spread' },
-            { name: 'openmm_orderbook', desc: 'View order book depth' },
-            { name: 'openmm_trades', desc: 'Recent trades with buy/sell flow' },
-            { name: 'openmm_balance', desc: 'Account balances' },
-            { name: 'openmm_list_orders', desc: 'Open orders' },
-            { name: 'openmm_grid_status', desc: 'Grid strategy status' },
-            { name: 'openmm_cardano_price', desc: 'Cardano DEX prices' },
-            { name: 'openmm_discover_pools', desc: 'Find liquidity pools' },
-          ].map((tool) => (
-            <div key={tool.name} className="bg-card border border-border rounded-lg p-4">
-              <code className="text-purple-400 text-sm">{tool.name}</code>
-              <p className="text-gray-500 text-sm mt-1">{tool.desc}</p>
-            </div>
-          ))}
+        <h2 className="text-xl font-semibold mb-6">Available Skills</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-3 px-4">Skill</th>
+                <th className="text-left py-3 px-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4"><code className="text-purple-400">openmm-exchange-setup</code></td>
+                <td className="py-3 px-4 text-gray-400">Guide for configuring exchange API credentials</td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4"><code className="text-purple-400">openmm-portfolio</code></td>
+                <td className="py-3 px-4 text-gray-400">Balance tracking and portfolio overview</td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4"><code className="text-purple-400">openmm-order-management</code></td>
+                <td className="py-3 px-4 text-gray-400">Place, list, and cancel orders</td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4"><code className="text-purple-400">openmm-grid-trading</code></td>
+                <td className="py-3 px-4 text-gray-400">Automated grid trading strategies</td>
+              </tr>
+              <tr className="border-b border-border/50">
+                <td className="py-3 px-4"><code className="text-purple-400">openmm-cardano-dex</code></td>
+                <td className="py-3 px-4 text-gray-400">Cardano DEX pool discovery and pricing</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
