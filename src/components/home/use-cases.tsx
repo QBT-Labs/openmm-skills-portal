@@ -1,14 +1,15 @@
 'use client'
 
-import { 
-  Wallet, 
-  Search, 
-  Bot, 
-  BookOpen, 
-  TrendingDown, 
+import {
+  Wallet,
+  Search,
+  Bot,
+  BookOpen,
+  TrendingDown,
   ShieldAlert,
   MessageSquare
 } from 'lucide-react'
+import { useFadeInOnScroll, useAlternatingSlideIn } from '@/hooks/use-scroll-animation'
 
 const useCases = [
   {
@@ -75,10 +76,13 @@ function UseCaseIcon({ icon: Icon, gradient, bgGlow }: { icon: typeof Wallet, gr
 }
 
 export function UseCases() {
+  const headerRef = useFadeInOnScroll<HTMLDivElement>()
+  const gridRef = useAlternatingSlideIn<HTMLDivElement>('.usecase-card')
+
   return (
     <section className="max-w-5xl mx-auto px-4 py-20">
       {/* Section Header */}
-      <div className="text-center mb-16">
+      <div ref={headerRef} className="text-center mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-sm mb-6">
           <MessageSquare className="w-3.5 h-3.5" />
           Just ask your agent
@@ -94,11 +98,11 @@ export function UseCases() {
       </div>
 
       {/* Use Cases Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {useCases.map((useCase) => (
           <div
             key={useCase.title}
-            className="group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/30 hover:bg-card/80 transition-all duration-300 flex flex-col"
+            className="usecase-card group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/30 hover:bg-card/80 transition-all duration-300 flex flex-col card-hover-glow"
           >
             {/* Icon */}
             <div className="mb-5">

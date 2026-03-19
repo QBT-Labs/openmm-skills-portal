@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Github, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 const navLinks = [
   { label: 'Skills', href: '/skills' },
+  { label: 'Quick Start', href: '/docs/quickstart' },
   { label: 'Prompts', href: '/prompts' },
   { label: 'Setup', href: '/setup' },
   { label: 'Docs', href: '/docs' },

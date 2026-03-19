@@ -3,6 +3,7 @@
 import { Copy, Check, ArrowRight, Wallet, TrendingUp, Grid3X3, ListOrdered, Coins } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useFadeInOnScroll, useStaggerIn } from '@/hooks/use-scroll-animation'
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -74,10 +75,13 @@ const skillCards = [
 const INSTALL_COMMAND = 'npx @qbtlabs/openmm-skills --all'
 
 export function PlugAndPlaySkills() {
+  const headerRef = useFadeInOnScroll<HTMLDivElement>()
+  const gridRef = useStaggerIn<HTMLDivElement>('.skill-card', { stagger: 0.12, fromY: 50 })
+
   return (
     <section className="max-w-5xl mx-auto px-4 py-20">
       {/* Section Header */}
-      <div className="text-center mb-12">
+      <div ref={headerRef} className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-sm mb-4">
           <span>🔌</span>
           <span>Plug & Play</span>
@@ -90,19 +94,19 @@ export function PlugAndPlaySkills() {
         <p className="text-gray-400 max-w-2xl mx-auto mb-8">
           Get instant access to market data, trading, and Cardano DEX tools. Works with any MCP-compatible AI agent.
         </p>
-        
+
         {/* Install Command Box */}
         <div className="inline-flex items-center gap-3 install-box mb-4">
           <span className="text-gray-500">$</span>
           <code className="text-purple-400 font-medium">{INSTALL_COMMAND}</code>
           <CopyButton text={INSTALL_COMMAND} />
         </div>
-        
+
         <p className="text-sm text-gray-500">
           Or explore individual skills on{' '}
-          <a 
-            href="https://github.com/QBT-Labs/OpenMM-ai" 
-            target="_blank" 
+          <a
+            href="https://github.com/QBT-Labs/OpenMM-ai"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-purple-400 hover:underline"
           >
@@ -112,11 +116,11 @@ export function PlugAndPlaySkills() {
       </div>
 
       {/* Skill Cards Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {skillCards.map((skill) => (
           <div
             key={skill.name}
-            className="group p-5 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300"
+            className="skill-card group p-5 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 card-hover-glow"
           >
             <div className="flex items-start gap-4">
               <div className={`w-10 h-10 rounded-lg ${skill.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
@@ -134,11 +138,11 @@ export function PlugAndPlaySkills() {
             </div>
           </div>
         ))}
-        
+
         {/* View All Skills Card */}
         <Link
           href="/skills"
-          className="group p-5 rounded-xl border border-dashed border-border hover:border-purple-500/50 bg-transparent hover:bg-card/30 transition-all duration-300 flex items-center justify-center"
+          className="skill-card group p-5 rounded-xl border border-dashed border-border hover:border-purple-500/50 bg-transparent hover:bg-card/30 transition-all duration-300 flex items-center justify-center"
         >
           <div className="text-center">
             <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-500/20 transition-colors">

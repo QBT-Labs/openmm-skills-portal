@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Copy, Check, Play, RotateCcw } from 'lucide-react'
+import { useFadeInOnScroll } from '@/hooks/use-scroll-animation'
 
 const setupSteps = [
   {
@@ -131,6 +132,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export function InteractiveTerminal() {
+  const sectionRef = useFadeInOnScroll<HTMLElement>()
   const [currentStep, setCurrentStep] = useState(0)
   const [isTyping, setIsTyping] = useState(false)
   const [displayedCommand, setDisplayedCommand] = useState('')
@@ -172,11 +174,11 @@ export function InteractiveTerminal() {
       } else {
         clearInterval(typingInterval)
         setIsTyping(false)
-        
+
         setTimeout(() => {
           setShowOutput(true)
           setCompletedSteps(prev => [...prev, currentStep])
-          
+
           setTimeout(() => {
             if (currentStep < setupSteps.length - 1) {
               setShowOutput(false)
@@ -203,7 +205,7 @@ export function InteractiveTerminal() {
   const currentStepData = setupSteps[currentStep]
 
   const getLineColor = (line: string) => {
-    if (line.startsWith('✅')) return 'text-green-400'
+    if (line.startsWith('✅')) return 'text-green-400 success-glow'
     if (line.startsWith('💡') || line.startsWith('●')) return 'text-yellow-400'
     if (line.startsWith('🔑') || line.startsWith('📁')) return 'text-cyan-400'
     if (line.startsWith('🔄')) return 'text-blue-400'
@@ -217,7 +219,7 @@ export function InteractiveTerminal() {
   }
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-16">
+    <section ref={sectionRef} className="max-w-4xl mx-auto px-4 py-16">
       <div className="text-center mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">
           <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
@@ -248,7 +250,7 @@ export function InteractiveTerminal() {
             </button>
           </div>
         </div>
-        
+
         {/* Terminal content */}
         <div className="p-6 font-mono text-sm bg-[#0d0d1a] min-h-[420px] max-h-[520px] overflow-y-auto">
           {/* Completed steps */}
@@ -276,7 +278,7 @@ export function InteractiveTerminal() {
                 <span className="text-purple-400 select-none">$</span>
                 <span className="text-gray-300">
                   {displayedCommand}
-                  {isTyping && <span className="animate-pulse text-purple-400">▋</span>}
+                  {isTyping && <span className="cursor-blink text-purple-400">▋</span>}
                 </span>
               </div>
               {showOutput && (
@@ -295,7 +297,7 @@ export function InteractiveTerminal() {
           {!isPlaying && completedSteps.length === 0 && (
             <div className="flex items-center gap-2">
               <span className="text-purple-400 select-none">$</span>
-              <span className="animate-pulse text-purple-400">▋</span>
+              <span className="cursor-blink text-purple-400">▋</span>
             </div>
           )}
 
@@ -303,7 +305,7 @@ export function InteractiveTerminal() {
           {!isPlaying && completedSteps.length === setupSteps.length && (
             <div className="flex items-center gap-2 mt-4">
               <span className="text-purple-400 select-none">$</span>
-              <span className="animate-pulse text-purple-400">▋</span>
+              <span className="cursor-blink text-purple-400">▋</span>
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { ExternalLink } from 'lucide-react'
+import { useFadeInOnScroll, useStaggerIn } from '@/hooks/use-scroll-animation'
 
 const exchanges = [
   {
@@ -9,6 +10,7 @@ const exchanges = [
     description: 'Global exchange with extensive altcoin listings and competitive fees.',
     features: ['Spot', 'Futures'],
     status: 'live' as const,
+    floatDelay: '0s',
   },
   {
     name: 'Gate.io',
@@ -16,6 +18,7 @@ const exchanges = [
     description: 'One of the oldest exchanges with 1,400+ cryptocurrencies supported.',
     features: ['Spot', 'Futures'],
     status: 'live' as const,
+    floatDelay: '0.75s',
   },
   {
     name: 'Bitget',
@@ -23,6 +26,7 @@ const exchanges = [
     description: 'Leading crypto derivatives exchange with copy trading features.',
     features: ['Spot', 'Futures'],
     status: 'live' as const,
+    floatDelay: '1.5s',
   },
   {
     name: 'Kraken',
@@ -30,6 +34,7 @@ const exchanges = [
     description: 'US-based exchange known for security and regulatory compliance.',
     features: ['Spot'],
     status: 'live' as const,
+    floatDelay: '2.25s',
   },
 ]
 
@@ -52,27 +57,32 @@ function StatusBadge({ status }: { status: 'live' | 'coming-soon' }) {
   )
 }
 
-function ExchangeLogo({ name }: { name: string }) {
-  // Simple text-based logo with gradient
+function ExchangeLogo({ name, floatDelay }: { name: string; floatDelay: string }) {
   const colors: Record<string, string> = {
     'MEXC': 'from-blue-400 to-cyan-400',
     'Gate.io': 'from-orange-400 to-yellow-400',
     'Bitget': 'from-cyan-400 to-blue-400',
     'Kraken': 'from-purple-400 to-indigo-400',
   }
-  
+
   return (
-    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors[name] || 'from-purple-400 to-pink-400'} flex items-center justify-center font-bold text-white text-lg shadow-lg`}>
+    <div
+      className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors[name] || 'from-purple-400 to-pink-400'} flex items-center justify-center font-bold text-white text-lg shadow-lg exchange-float will-change-transform`}
+      style={{ animationDelay: floatDelay }}
+    >
       {name.charAt(0)}
     </div>
   )
 }
 
 export function SupportedExchanges() {
+  const headerRef = useFadeInOnScroll<HTMLDivElement>()
+  const gridRef = useStaggerIn<HTMLDivElement>('.exchange-card', { stagger: 0.15, fromY: 50 })
+
   return (
     <section className="max-w-5xl mx-auto px-4 py-20">
       {/* Section Header */}
-      <div className="text-center mb-12">
+      <div ref={headerRef} className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
             Supported Exchanges
@@ -84,23 +94,23 @@ export function SupportedExchanges() {
       </div>
 
       {/* Exchange Cards Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {exchanges.map((exchange) => (
           <a
             key={exchange.name}
             href={exchange.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 flex flex-col"
+            className="exchange-card group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 flex flex-col card-hover-glow"
           >
             {/* Status Badge - Top Right */}
             <div className="absolute top-4 right-4">
               <StatusBadge status={exchange.status} />
             </div>
 
-            {/* Logo */}
+            {/* Logo with float */}
             <div className="mb-4">
-              <ExchangeLogo name={exchange.name} />
+              <ExchangeLogo name={exchange.name} floatDelay={exchange.floatDelay} />
             </div>
 
             {/* Name with external link icon */}

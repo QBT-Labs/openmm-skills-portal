@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useFadeInOnScroll } from '@/hooks/use-scroll-animation'
 
 const clients = [
   { name: 'Claude', logo: '/logos/claude.svg' },
@@ -11,8 +12,10 @@ const clients = [
 ]
 
 export function MCPClients() {
+  const sectionRef = useFadeInOnScroll<HTMLElement>()
+
   return (
-    <section className="max-w-5xl mx-auto px-4 py-16">
+    <section ref={sectionRef} className="max-w-5xl mx-auto px-4 py-16">
       <div className="text-center mb-10">
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">
           <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
