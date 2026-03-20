@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useFadeInOnScroll } from '@/hooks/use-scroll-animation'
 
 const clients = [
   { name: 'Claude', logo: '/logos/claude.svg' },
@@ -11,15 +12,17 @@ const clients = [
 ]
 
 export function MCPClients() {
+  const sectionRef = useFadeInOnScroll<HTMLElement>()
+
   return (
-    <section className="max-w-5xl mx-auto px-4 py-16">
+    <section ref={sectionRef} className="max-w-5xl mx-auto px-4 py-16">
       <div className="text-center mb-10">
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             Works with Every MCP Client
           </span>
         </h2>
-        <p className="text-gray-400">
+        <p className="text-gray-500">
           Connect OpenMM to your favorite AI coding assistant via Model Context Protocol
         </p>
       </div>
@@ -38,7 +41,7 @@ export function MCPClients() {
         ))}
       </div>
 
-      <p className="text-center text-xs text-gray-500 mt-8">
+      <p className="text-center text-xs text-gray-400 mt-8">
         And any other MCP-compatible client
       </p>
     </section>

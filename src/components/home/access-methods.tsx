@@ -2,6 +2,7 @@
 
 import { ArrowRight, Terminal, Plug, Cpu, Code } from 'lucide-react'
 import Link from 'next/link'
+import { useFadeInOnScroll, useStaggerIn } from '@/hooks/use-scroll-animation'
 
 const accessMethods = [
   {
@@ -35,27 +36,30 @@ const accessMethods = [
 ]
 
 export function AccessMethods() {
+  const headerRef = useFadeInOnScroll<HTMLDivElement>()
+  const gridRef = useStaggerIn<HTMLDivElement>('.access-card', { stagger: 0.12, fromY: 50 })
+
   return (
     <section className="max-w-5xl mx-auto px-4 py-20">
       {/* Section Header */}
-      <div className="text-center mb-12">
+      <div ref={headerRef} className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             Choose Your Access Method
           </span>
         </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto">
+        <p className="text-gray-500 max-w-2xl mx-auto">
           Multiple ways to integrate OpenMM into your workflow. Pick what works best for you.
         </p>
       </div>
 
       {/* Cards Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {accessMethods.map((method) => (
           <Link
             key={method.title}
             href={method.href}
-            className="group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 flex flex-col"
+            className="access-card group relative p-6 rounded-xl border border-border bg-card/80 hover:border-purple-500/50 hover:bg-card transition-all duration-300 flex flex-col card-hover-glow"
           >
             {/* Icon */}
             <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
@@ -66,7 +70,7 @@ export function AccessMethods() {
             <h3 className="text-lg font-semibold mb-2 group-hover:text-purple-400 transition-colors">
               {method.title}
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed flex-grow mb-4">
+            <p className="text-gray-500 text-sm leading-relaxed flex-grow mb-4">
               {method.description}
             </p>
 

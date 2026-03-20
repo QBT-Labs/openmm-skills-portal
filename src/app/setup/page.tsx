@@ -76,10 +76,67 @@ const exchanges: Exchange[] = [
   },
 ]
 
+function StepItem({ num, children }: { num: number; children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2">
+      <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">{num}</span>
+      <span>{children}</span>
+    </li>
+  )
+}
+
+function NextSteps({ format }: { format: 'env' | 'claude-desktop' | 'claude-code' | 'cursor' }) {
+  if (format === 'env') {
+    return (
+      <ol className="space-y-2 text-sm text-gray-400">
+        <StepItem num={1}>Copy the config above</StepItem>
+        <StepItem num={2}>Create a <code className="text-purple-400">.env</code> file in your project root</StepItem>
+        <StepItem num={3}>Paste and save the credentials</StepItem>
+        <StepItem num={4}>Run <code className="text-purple-400">npx openmm balance</code> to verify</StepItem>
+      </ol>
+    )
+  }
+
+  if (format === 'claude-desktop') {
+    return (
+      <ol className="space-y-2 text-sm text-gray-400">
+        <StepItem num={1}>Copy the config above</StepItem>
+        <StepItem num={2}>Open Claude Desktop settings (<code className="text-purple-400">⌘ + ,</code>)</StepItem>
+        <StepItem num={3}>Navigate to Developer → Edit Config</StepItem>
+        <StepItem num={4}>Paste into <code className="text-purple-400">claude_desktop_config.json</code> and save</StepItem>
+        <StepItem num={5}>Restart Claude Desktop</StepItem>
+      </ol>
+    )
+  }
+
+  if (format === 'claude-code') {
+    return (
+      <ol className="space-y-2 text-sm text-gray-400">
+        <StepItem num={1}>Copy the config above</StepItem>
+        <StepItem num={2}>Open <code className="text-purple-400">~/.claude/settings.json</code></StepItem>
+        <StepItem num={3}>Merge the <code className="text-purple-400">mcpServers</code> block into your existing config</StepItem>
+        <StepItem num={4}>Save and restart Claude Code</StepItem>
+        <StepItem num={5}>Ask: <em className="text-purple-300">&quot;What is my balance on MEXC?&quot;</em></StepItem>
+      </ol>
+    )
+  }
+
+  // cursor
+  return (
+    <ol className="space-y-2 text-sm text-gray-400">
+      <StepItem num={1}>Copy the config above</StepItem>
+      <StepItem num={2}>Create <code className="text-purple-400">.cursor/mcp.json</code> in your project root</StepItem>
+      <StepItem num={3}>Paste and save the config</StepItem>
+      <StepItem num={4}>Restart Cursor or reload the window (<code className="text-purple-400">⌘ + Shift + P</code> → Reload)</StepItem>
+      <StepItem num={5}>OpenMM tools will appear in Cursor&apos;s MCP panel</StepItem>
+    </ol>
+  )
+}
+
 export default function SetupPage() {
   const [credentials, setCredentials] = useState<Record<string, string>>({})
   const [selectedExchanges, setSelectedExchanges] = useState<Set<string>>(new Set())
-  const [outputFormat, setOutputFormat] = useState<'env' | 'mcp'>('env')
+  const [outputFormat, setOutputFormat] = useState<'env' | 'claude-desktop' | 'claude-code' | 'cursor'>('env')
 
   const toggleExchange = (id: string) => {
     const newSelected = new Set(selectedExchanges)
@@ -112,9 +169,8 @@ export default function SetupPage() {
     return lines.join('\n')
   }
 
-  const generateMcpConfig = () => {
+  const buildEnvObject = () => {
     const env: Record<string, string> = {}
-    
     exchanges.forEach((exchange) => {
       if (selectedExchanges.has(exchange.id)) {
         exchange.fields.forEach((field) => {
@@ -125,21 +181,67 @@ export default function SetupPage() {
         })
       }
     })
+    return env
+  }
 
+  const generateClaudeDesktopConfig = () => {
     const config = {
       mcpServers: {
         openmm: {
           command: 'npx',
-          args: ['-y', 'openmm-mcp'],
-          env,
+          args: ['-y', '@qbtlabs/openmm-mcp'],
+          env: buildEnvObject(),
         },
       },
     }
-
     return JSON.stringify(config, null, 2)
   }
 
-  const generatedOutput = outputFormat === 'env' ? generateEnvFile() : generateMcpConfig()
+  const generateClaudeCodeConfig = () => {
+    const config = {
+      mcpServers: {
+        openmm: {
+          command: 'npx',
+          args: ['-y', '@qbtlabs/openmm-mcp'],
+          env: buildEnvObject(),
+        },
+      },
+    }
+    return JSON.stringify(config, null, 2)
+  }
+
+  const generateCursorConfig = () => {
+    const config = {
+      mcpServers: {
+        openmm: {
+          command: 'npx',
+          args: ['-y', '@qbtlabs/openmm-mcp'],
+          env: buildEnvObject(),
+        },
+      },
+    }
+    return JSON.stringify(config, null, 2)
+  }
+
+  const getGeneratedOutput = () => {
+    switch (outputFormat) {
+      case 'env': return generateEnvFile()
+      case 'claude-desktop': return generateClaudeDesktopConfig()
+      case 'claude-code': return generateClaudeCodeConfig()
+      case 'cursor': return generateCursorConfig()
+    }
+  }
+
+  const getFileName = () => {
+    switch (outputFormat) {
+      case 'env': return '.env'
+      case 'claude-desktop': return 'claude_desktop_config.json'
+      case 'claude-code': return 'settings.json'
+      case 'cursor': return '.cursor/mcp.json'
+    }
+  }
+
+  const generatedOutput = getGeneratedOutput()
   const hasSelectedExchanges = selectedExchanges.size > 0
 
   return (
@@ -184,19 +286,17 @@ export default function SetupPage() {
             {exchanges.map((exchange) => (
               <div
                 key={exchange.id}
-                className={`bg-card border rounded-xl p-5 transition-colors ${
+                className={`bg-card border rounded-xl p-5 transition-colors cursor-pointer ${
                   selectedExchanges.has(exchange.id)
                     ? 'border-purple-500/50 bg-purple-500/5'
                     : 'border-border hover:border-purple-500/30'
                 }`}
+                onClick={() => toggleExchange(exchange.id)}
               >
                 {/* Exchange Header */}
                 <div className="flex items-center justify-between mb-4">
-                  <button
-                    onClick={() => toggleExchange(exchange.id)}
-                    className="flex items-center gap-3"
-                  >
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-2xl ${
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-2xl transition-colors ${
                       selectedExchanges.has(exchange.id) ? 'bg-purple-500/20' : 'bg-secondary'
                     }`}>
                       {exchange.logo}
@@ -212,11 +312,12 @@ export default function SetupPage() {
                         {exchange.fields.length} credential{exchange.fields.length > 2 ? 's' : 's'} required
                       </div>
                     </div>
-                  </button>
+                  </div>
                   <a
                     href={exchange.docsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1"
                   >
                     Get API Key <ExternalLink className="w-3 h-3" />
@@ -225,7 +326,7 @@ export default function SetupPage() {
 
                 {/* Credential Fields (shown when selected) */}
                 {selectedExchanges.has(exchange.id) && (
-                  <div className="space-y-3 pt-4 border-t border-border">
+                  <div className="space-y-3 pt-4 border-t border-border" onClick={(e) => e.stopPropagation()}>
                     {exchange.fields.map((field) => (
                       <div key={field.key}>
                         <label className="text-sm text-gray-400 mb-1 block">
@@ -251,27 +352,25 @@ export default function SetupPage() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Generated Config</h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setOutputFormat('env')}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  outputFormat === 'env'
-                    ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50'
-                    : 'bg-secondary text-gray-400 border border-border hover:text-white'
-                }`}
-              >
-                .env File
-              </button>
-              <button
-                onClick={() => setOutputFormat('mcp')}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  outputFormat === 'mcp'
-                    ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50'
-                    : 'bg-secondary text-gray-400 border border-border hover:text-white'
-                }`}
-              >
-                MCP Config
-              </button>
+            <div className="flex gap-1.5 flex-wrap">
+              {([
+                { key: 'env', label: '.env' },
+                { key: 'claude-desktop', label: 'Claude Desktop' },
+                { key: 'claude-code', label: 'Claude Code' },
+                { key: 'cursor', label: 'Cursor' },
+              ] as const).map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setOutputFormat(tab.key)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    outputFormat === tab.key
+                      ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50'
+                      : 'bg-secondary text-gray-400 border border-border hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -279,7 +378,7 @@ export default function SetupPage() {
             {/* Output Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/50">
               <span className="text-sm text-gray-400 font-mono">
-                {outputFormat === 'env' ? '.env' : 'claude_desktop_config.json'}
+                {getFileName()}
               </span>
               <CopyButton text={generatedOutput} />
             </div>
@@ -301,45 +400,7 @@ export default function SetupPage() {
           {hasSelectedExchanges && (
             <div className="mt-6 bg-card border border-border rounded-xl p-5">
               <h3 className="font-semibold mb-3">Next Steps:</h3>
-              {outputFormat === 'env' ? (
-                <ol className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">1</span>
-                    <span>Copy the config above</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">2</span>
-                    <span>Create a <code className="text-purple-400">.env</code> file in your project root</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">3</span>
-                    <span>Paste and save the credentials</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">4</span>
-                    <span>Run <code className="text-purple-400">npx openmm balance</code> to verify</span>
-                  </li>
-                </ol>
-              ) : (
-                <ol className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">1</span>
-                    <span>Copy the config above</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">2</span>
-                    <span>Open Claude Desktop settings (⌘ + ,)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">3</span>
-                    <span>Navigate to Developer → Edit Config</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-xs">4</span>
-                    <span>Paste and save, then restart Claude</span>
-                  </li>
-                </ol>
-              )}
+              <NextSteps format={outputFormat} />
             </div>
           )}
         </div>

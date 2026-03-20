@@ -1,8 +1,10 @@
 'use client'
 
 import { Copy, Check, ArrowRight, Sparkles, Zap, Shield } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Button } from '@/components/ui/button'
 import { AccessMethods } from '@/components/home/access-methods'
 import { SupportedExchanges } from '@/components/home/supported-exchanges'
@@ -11,6 +13,8 @@ import { InteractiveTerminal } from '@/components/home/interactive-terminal'
 import { MCPClients } from '@/components/home/mcp-clients'
 import { PlugAndPlaySkills } from '@/components/home/plug-and-play-skills'
 import { AnimatedHero } from '@/components/home/animated-hero'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const INSTALL_COMMAND = 'npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp'
 
@@ -57,6 +61,63 @@ const features = [
 ]
 
 export default function Home() {
+  const featuresGridRef = useRef<HTMLDivElement>(null)
+  const codePreviewRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    const tweens: gsap.core.Tween[] = []
+
+    // Features cards stagger
+    if (featuresGridRef.current) {
+      const cards = featuresGridRef.current.querySelectorAll('.feature-card')
+      gsap.set(cards, { opacity: 0, y: 60 })
+
+      tweens.push(
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: featuresGridRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      )
+    }
+
+    // Code preview fade-in
+    if (codePreviewRef.current) {
+      gsap.set(codePreviewRef.current, { opacity: 0, y: 80 })
+
+      tweens.push(
+        gsap.to(codePreviewRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: codePreviewRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      )
+    }
+
+    return () => {
+      tweens.forEach((t) => {
+        t.scrollTrigger?.kill()
+        t.kill()
+      })
+    }
+  }, [])
+
   return (
     <div className="min-h-[calc(100vh-4rem)]">
       {/* Animated Hero with Orb Background */}
@@ -87,16 +148,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Interactive Terminal Section - Right after Browse Skills */}
+      {/* Interactive Terminal Section */}
       <InteractiveTerminal />
 
       {/* Features Section */}
       <section className="max-w-5xl mx-auto px-4 py-20">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div ref={featuresGridRef} className="grid md:grid-cols-3 gap-8">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300"
+              className="feature-card group p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 card-hover-glow"
             >
               <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
                 <feature.icon className="w-5 h-5 text-purple-400" />
@@ -126,7 +187,7 @@ export default function Home() {
       <AccessMethods />
 
       {/* Code Preview Section */}
-      <section className="max-w-5xl mx-auto px-4 pb-24">
+      <section ref={codePreviewRef} className="max-w-5xl mx-auto px-4 pb-24">
         <div className="rounded-xl border border-border bg-card overflow-hidden">
           {/* Terminal header */}
           <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-card">
@@ -137,7 +198,7 @@ export default function Home() {
             </div>
             <span className="text-xs text-gray-500 ml-2">Terminal</span>
           </div>
-          
+
           {/* Terminal content */}
           <div className="p-6 font-mono text-sm space-y-3">
             <div className="flex items-start gap-2">
