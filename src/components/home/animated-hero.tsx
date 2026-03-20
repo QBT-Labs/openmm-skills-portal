@@ -43,126 +43,10 @@ function CountUp({ end, suffix = '' }: { end: number; suffix?: string }) {
 }
 
 export function AnimatedHero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const orbContainerRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
   const subheadlineRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
-
-  // Canvas orb animation — high saturation, high contrast
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    let animationId: number
-    let time = 0
-
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1
-      const rect = canvas.getBoundingClientRect()
-      canvas.width = rect.width * dpr
-      canvas.height = rect.height * dpr
-      ctx.scale(dpr, dpr)
-    }
-
-    resize()
-    window.addEventListener('resize', resize)
-
-    const draw = () => {
-      const rect = canvas.getBoundingClientRect()
-      const width = rect.width
-      const height = rect.height
-      const centerX = width / 2
-      const centerY = height / 2
-      const radius = Math.min(width, height) * 0.55
-
-      ctx.clearRect(0, 0, width, height)
-
-      // Dark base to increase contrast
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'
-      ctx.fillRect(0, 0, width, height)
-
-      for (let i = 0; i < 3; i++) {
-        const offset = (i * Math.PI * 2) / 3
-        const wobbleX = Math.sin(time * 0.8 + offset) * radius * 0.3
-        const wobbleY = Math.cos(time * 0.6 + offset) * radius * 0.3
-
-        const gradient = ctx.createRadialGradient(
-          centerX + wobbleX,
-          centerY + wobbleY,
-          0,
-          centerX + wobbleX,
-          centerY + wobbleY,
-          radius * 1.2
-        )
-
-        if (i === 0) {
-          // Pink — saturated
-          gradient.addColorStop(0, 'rgba(236, 72, 153, 0.95)')
-          gradient.addColorStop(0.3, 'rgba(219, 39, 119, 0.6)')
-          gradient.addColorStop(0.7, 'rgba(219, 39, 119, 0.15)')
-          gradient.addColorStop(1, 'rgba(219, 39, 119, 0)')
-        } else if (i === 1) {
-          // Cyan — saturated
-          gradient.addColorStop(0, 'rgba(34, 211, 238, 0.9)')
-          gradient.addColorStop(0.3, 'rgba(6, 182, 212, 0.5)')
-          gradient.addColorStop(0.7, 'rgba(6, 182, 212, 0.12)')
-          gradient.addColorStop(1, 'rgba(6, 182, 212, 0)')
-        } else {
-          // Purple — saturated
-          gradient.addColorStop(0, 'rgba(139, 92, 246, 1)')
-          gradient.addColorStop(0.3, 'rgba(124, 58, 237, 0.65)')
-          gradient.addColorStop(0.7, 'rgba(124, 58, 237, 0.15)')
-          gradient.addColorStop(1, 'rgba(124, 58, 237, 0)')
-        }
-
-        ctx.globalCompositeOperation = i === 0 ? 'source-over' : 'lighter'
-        ctx.fillStyle = gradient
-        ctx.beginPath()
-        ctx.arc(centerX + wobbleX, centerY + wobbleY, radius * 1.2, 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      time += 0.015
-      animationId = requestAnimationFrame(draw)
-    }
-
-    draw()
-
-    return () => {
-      window.removeEventListener('resize', resize)
-      cancelAnimationFrame(animationId)
-    }
-  }, [])
-
-  // Mouse parallax for orb container
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
-    if (window.innerWidth < 768) return
-
-    const container = orbContainerRef.current
-    if (!container) return
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = ((e.clientX / window.innerWidth) - 0.5) * 40
-      const y = ((e.clientY / window.innerHeight) - 0.5) * 40
-
-      gsap.to(container, {
-        x,
-        y,
-        duration: 1,
-        ease: 'power2.out',
-      })
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   // Hero entrance animation sequence — uses fromTo so elements are always visible at the end
   useEffect(() => {
@@ -230,25 +114,32 @@ export function AnimatedHero() {
   }
 
   return (
-    <section className="relative overflow-hidden pt-24 pb-8 flex items-center justify-center">
-      {/* Animated Orb Background with mouse parallax */}
-      <div
-        ref={orbContainerRef}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform"
-        style={{ top: '-20%', height: '140%' }}
-      >
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full"
-          style={{ filter: 'blur(50px)', minHeight: '600px' }}
-        />
-      </div>
+    <section className="relative overflow-hidden pt-24 pb-8 flex items-center justify-center min-h-[70vh] bg-[#0a0a0f]">
+      {/* Layer 1: Eclipse Glow shader (base) */}
+      <iframe
+        src="/shaders/eclipse-glow.html"
+        title="Background effect"
+        className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+        style={{ opacity: 0.85 }}
+        aria-hidden="true"
+        tabIndex={-1}
+      />
 
-      {/* Dark overlay for contrast */}
+      {/* Layer 2: Kinetic Grid shader (texture overlay) */}
+      <iframe
+        src="/shaders/kinetic-grid.html"
+        title="Grid effect"
+        className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+        style={{ opacity: 0.35, mixBlendMode: 'screen' }}
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+
+      {/* Soft vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.5) 70%)',
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 80%)',
         }}
       />
 

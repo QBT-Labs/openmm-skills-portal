@@ -17,13 +17,13 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={copy}
-      className="p-2 hover:bg-white/10 rounded-md transition-colors"
+      className="p-2 hover:bg-gray-900/10 rounded-md transition-colors"
       aria-label="Copy to clipboard"
     >
       {copied ? (
         <Check className="w-4 h-4 text-green-400" />
       ) : (
-        <Copy className="w-4 h-4 text-gray-400 hover:text-white" />
+        <Copy className="w-4 h-4 text-gray-400 hover:text-gray-900" />
       )}
     </button>
   )
@@ -87,22 +87,22 @@ export function PlugAndPlaySkills() {
           <span>Plug & Play</span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             Install All Skills with One Command
           </span>
         </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto mb-8">
+        <p className="text-gray-500 max-w-2xl mx-auto mb-8">
           Get instant access to market data, trading, and Cardano DEX tools. Works with any MCP-compatible AI agent.
         </p>
 
         {/* Install Command Box */}
         <div className="inline-flex items-center gap-3 install-box mb-4">
-          <span className="text-gray-500">$</span>
+          <span className="text-gray-400">$</span>
           <code className="text-purple-400 font-medium">{INSTALL_COMMAND}</code>
           <CopyButton text={INSTALL_COMMAND} />
         </div>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-400">
           Or explore individual skills on{' '}
           <a
             href="https://github.com/QBT-Labs/OpenMM-ai"
@@ -120,7 +120,7 @@ export function PlugAndPlaySkills() {
         {skillCards.map((skill) => (
           <div
             key={skill.name}
-            className="skill-card group p-5 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 card-hover-glow"
+            className="skill-card group p-5 rounded-xl border border-border bg-card/80 hover:border-purple-500/50 hover:bg-card transition-all duration-300 card-hover-glow"
           >
             <div className="flex items-start gap-4">
               <div className={`w-10 h-10 rounded-lg ${skill.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
@@ -130,10 +130,10 @@ export function PlugAndPlaySkills() {
                 <h3 className="font-semibold text-sm mb-1 group-hover:text-purple-400 transition-colors truncate">
                   {skill.name}
                 </h3>
-                <p className="text-gray-400 text-xs leading-relaxed mb-2">
+                <p className="text-gray-500 text-xs leading-relaxed mb-2">
                   {skill.description}
                 </p>
-                <span className="text-xs text-gray-500">{skill.tools} tools</span>
+                <span className="text-xs text-gray-400">{skill.tools} tools</span>
               </div>
             </div>
           </div>
@@ -148,7 +148,7 @@ export function PlugAndPlaySkills() {
             <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-500/20 transition-colors">
               <ArrowRight className="w-5 h-5 text-purple-400 group-hover:translate-x-1 transition-transform" />
             </div>
-            <span className="text-sm text-gray-400 group-hover:text-white transition-colors">
+            <span className="text-sm text-gray-500 group-hover:text-gray-900 transition-colors">
               View All Skills
             </span>
           </div>

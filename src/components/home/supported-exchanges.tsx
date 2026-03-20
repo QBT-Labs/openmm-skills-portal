@@ -84,11 +84,11 @@ export function SupportedExchanges() {
       {/* Section Header */}
       <div ref={headerRef} className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             Supported Exchanges
           </span>
         </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto">
+        <p className="text-gray-500 max-w-2xl mx-auto">
           Connect to major cryptocurrency exchanges. More integrations coming soon.
         </p>
       </div>
@@ -101,7 +101,7 @@ export function SupportedExchanges() {
             href={exchange.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="exchange-card group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/50 hover:bg-card transition-all duration-300 flex flex-col card-hover-glow"
+            className="exchange-card group relative p-6 rounded-xl border border-border bg-card/80 hover:border-purple-500/50 hover:bg-card transition-all duration-300 flex flex-col card-hover-glow"
           >
             {/* Status Badge - Top Right */}
             <div className="absolute top-4 right-4">
@@ -116,11 +116,11 @@ export function SupportedExchanges() {
             {/* Name with external link icon */}
             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 group-hover:text-purple-400 transition-colors">
               {exchange.name}
-              <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-purple-400 transition-colors" />
+              <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-purple-400 transition-colors" />
             </h3>
 
             {/* Description */}
-            <p className="text-gray-400 text-sm leading-relaxed flex-grow mb-4">
+            <p className="text-gray-500 text-sm leading-relaxed flex-grow mb-4">
               {exchange.description}
             </p>
 

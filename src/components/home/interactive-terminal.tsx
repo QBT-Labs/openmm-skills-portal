@@ -222,11 +222,11 @@ export function InteractiveTerminal() {
     <section ref={sectionRef} className="max-w-4xl mx-auto px-4 py-16">
       <div className="text-center mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             Setup in 60 Seconds
           </span>
         </h2>
-        <p className="text-gray-400">Install globally, configure once, trade everywhere</p>
+        <p className="text-gray-500">Install globally, configure once, trade everywhere</p>
       </div>
 
       <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -313,22 +313,22 @@ export function InteractiveTerminal() {
 
       {/* Quick copy commands */}
       <div className="mt-6 grid sm:grid-cols-3 gap-3">
-        <div className="bg-card/50 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-500 mb-2">CLI</div>
+        <div className="bg-card/80 border border-border rounded-lg p-4">
+          <div className="text-xs text-gray-400 mb-2">CLI</div>
           <div className="flex items-center justify-between">
             <code className="text-purple-400 text-xs truncate mr-2">npm i -g @3rd-eye-labs/openmm</code>
             <CopyButton text="npm install -g @3rd-eye-labs/openmm && npx @3rd-eye-labs/openmm setup" />
           </div>
         </div>
-        <div className="bg-card/50 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-500 mb-2">MCP Server</div>
+        <div className="bg-card/80 border border-border rounded-lg p-4">
+          <div className="text-xs text-gray-400 mb-2">MCP Server</div>
           <div className="flex items-center justify-between">
             <code className="text-purple-400 text-xs truncate mr-2">npm i -g @qbtlabs/openmm-mcp</code>
             <CopyButton text="npm install -g @qbtlabs/openmm-mcp && npx @qbtlabs/openmm-mcp setup" />
           </div>
         </div>
-        <div className="bg-card/50 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-500 mb-2">Skills</div>
+        <div className="bg-card/80 border border-border rounded-lg p-4">
+          <div className="text-xs text-gray-400 mb-2">Skills</div>
           <div className="flex items-center justify-between">
             <code className="text-purple-400 text-xs truncate mr-2">npx @qbtlabs/openmm-skills --all</code>
             <CopyButton text="npx @qbtlabs/openmm-skills --all" />

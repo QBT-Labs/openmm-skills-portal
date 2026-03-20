@@ -88,11 +88,11 @@ export function UseCases() {
           Just ask your agent
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             What Can You Build?
           </span>
         </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+        <p className="text-gray-500 max-w-2xl mx-auto text-lg">
           Give your AI agent superpowers. Here&apos;s what becomes possible with OpenMM.
         </p>
       </div>
@@ -102,7 +102,7 @@ export function UseCases() {
         {useCases.map((useCase) => (
           <div
             key={useCase.title}
-            className="usecase-card group relative p-6 rounded-xl border border-border bg-card/50 hover:border-purple-500/30 hover:bg-card/80 transition-all duration-300 flex flex-col card-hover-glow"
+            className="usecase-card group relative p-6 rounded-xl border border-border bg-card/80 hover:border-purple-500/30 hover:bg-card transition-all duration-300 flex flex-col card-hover-glow"
           >
             {/* Icon */}
             <div className="mb-5">
@@ -110,12 +110,12 @@ export function UseCases() {
             </div>
 
             {/* Title */}
-            <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-purple-300 transition-colors">
+            <h3 className="text-xl font-semibold mb-2 text-gray-900 group-hover:text-purple-300 transition-colors">
               {useCase.title}
             </h3>
 
             {/* Description */}
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+            <p className="text-gray-500 text-sm leading-relaxed mb-4">
               {useCase.description}
             </p>
 
@@ -123,7 +123,7 @@ export function UseCases() {
             <div className="mt-auto pt-4 border-t border-border/50">
               <div className="flex items-start gap-2">
                 <span className="text-purple-400 text-xs font-medium shrink-0 mt-0.5">TRY:</span>
-                <p className="text-gray-500 text-sm italic leading-snug">
+                <p className="text-gray-400 text-sm italic leading-snug">
                   {useCase.examplePrompt}
                 </p>
               </div>
@@ -134,7 +134,7 @@ export function UseCases() {
 
       {/* Bottom CTA */}
       <div className="text-center mt-12">
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-400 text-sm">
           And that&apos;s just the beginning. Your agent can combine these tools in endless ways.
         </p>
       </div>
