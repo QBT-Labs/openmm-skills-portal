@@ -110,7 +110,7 @@ export function UseCases() {
             </div>
 
             {/* Title */}
-            <h3 className="text-xl font-semibold mb-2 text-gray-900 group-hover:text-purple-300 transition-colors">
+            <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-purple-300 transition-colors">
               {useCase.title}
             </h3>
 
