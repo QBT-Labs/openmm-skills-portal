@@ -98,19 +98,35 @@ export default function MCPSetupPage() {
         <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-6">
           <h2 className="text-lg font-semibold mb-2">⚡ Quick Setup (Recommended)</h2>
           <p className="text-gray-300 text-sm mb-4">
-            The fastest way to get started. The setup wizard configures everything for you:
+            Install, set up your vault, start the server, then configure your client:
           </p>
           <div className="install-box flex items-center justify-between mb-2">
             <code className="text-purple-400 text-sm">npm install -g @qbtlabs/openmm-mcp</code>
             <CopyButton text="npm install -g @qbtlabs/openmm-mcp" />
           </div>
+          <div className="install-box flex items-center justify-between mb-2">
+            <code className="text-purple-400 text-sm">openmm-init</code>
+            <CopyButton text="openmm-init" />
+          </div>
+          <div className="install-box flex items-center justify-between mb-2">
+            <code className="text-purple-400 text-sm">openmm serve</code>
+            <CopyButton text="openmm serve" />
+          </div>
           <div className="install-box flex items-center justify-between">
-            <code className="text-purple-400 text-sm">npx @qbtlabs/openmm-mcp setup</code>
-            <CopyButton text="npx @qbtlabs/openmm-mcp setup" />
+            <code className="text-purple-400 text-sm">openmm-mcp --setup</code>
+            <CopyButton text="openmm-mcp --setup" />
           </div>
           <p className="text-gray-400 text-sm mt-3">
-            The wizard will ask which MCP clients to configure (Claude Desktop, Claude Code, Cursor, Windsurf) and 
-            prompts for your exchange API credentials. No manual .env files needed!
+            <code className="text-purple-400">openmm-mcp --setup</code> writes your client config with <code className="text-purple-400">OPENMM_SOCKET</code>, <code className="text-purple-400">PAYMENT_SERVER</code>, and transport settings — no credentials leave the vault.
+          </p>
+        </div>
+      </section>
+
+      {/* Important Note */}
+      <section className="mb-12">
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-6">
+          <p className="text-sm text-yellow-300">
+            <strong>Important:</strong> Run <code className="bg-yellow-500/20 px-1 rounded">openmm serve</code> before launching your MCP client. The server must be running for the socket connection to work.
           </p>
         </div>
       </section>
@@ -136,11 +152,11 @@ export default function MCPSetupPage() {
                 Run the setup wizard and select <strong>Claude Desktop</strong>:
               </p>
               <div className="install-box flex items-center justify-between">
-                <code className="text-purple-400 text-sm">npx @qbtlabs/openmm-mcp setup</code>
-                <CopyButton text="npx @qbtlabs/openmm-mcp setup" />
+                <code className="text-purple-400 text-sm">openmm-mcp --setup</code>
+                <CopyButton text="openmm-mcp --setup" />
               </div>
               <p className="text-sm text-gray-400 mt-2">
-                The wizard automatically edits <code className="text-purple-400">claude_desktop_config.json</code> for you.
+                The wizard writes to <code className="text-purple-400">claude_desktop_config.json</code> using <code className="text-purple-400">node</code> with absolute path — no API keys in config.
               </p>
               <h4 className="font-medium mt-4">After setup:</h4>
               <p className="text-sm text-gray-400">
@@ -155,8 +171,8 @@ export default function MCPSetupPage() {
                 Run the setup wizard and select <strong>Cursor</strong>:
               </p>
               <div className="install-box flex items-center justify-between">
-                <code className="text-purple-400 text-sm">npx @qbtlabs/openmm-mcp setup</code>
-                <CopyButton text="npx @qbtlabs/openmm-mcp setup" />
+                <code className="text-purple-400 text-sm">openmm-mcp --setup</code>
+                <CopyButton text="openmm-mcp --setup" />
               </div>
               <p className="text-sm text-gray-400 mt-2">
                 The wizard configures Cursor&apos;s MCP settings automatically.
@@ -204,8 +220,8 @@ export default function MCPSetupPage() {
                 Run the setup wizard and select <strong>Claude Code</strong> (OpenClaw uses the same config):
               </p>
               <div className="install-box flex items-center justify-between">
-                <code className="text-purple-400 text-sm">npx @qbtlabs/openmm-mcp setup</code>
-                <CopyButton text="npx @qbtlabs/openmm-mcp setup" />
+                <code className="text-purple-400 text-sm">openmm-mcp --setup</code>
+                <CopyButton text="openmm-mcp --setup" />
               </div>
               
               <h4 className="font-medium mt-4">Restart the OpenClaw gateway</h4>
@@ -222,8 +238,8 @@ export default function MCPSetupPage() {
                 Run the setup wizard and select <strong>Windsurf</strong>:
               </p>
               <div className="install-box flex items-center justify-between">
-                <code className="text-purple-400 text-sm">npx @qbtlabs/openmm-mcp setup</code>
-                <CopyButton text="npx @qbtlabs/openmm-mcp setup" />
+                <code className="text-purple-400 text-sm">openmm-mcp --setup</code>
+                <CopyButton text="openmm-mcp --setup" />
               </div>
               <p className="text-sm text-gray-400 mt-2">
                 The wizard configures Windsurf&apos;s MCP settings automatically.
@@ -265,17 +281,18 @@ export default function MCPSetupPage() {
           <div className="bg-card border border-border rounded-lg p-6">
             <h3 className="font-medium mb-2">Tools not appearing?</h3>
             <ul className="text-sm text-gray-400 space-y-1">
-              <li>• Make sure you&apos;ve restarted your AI client after setup</li>
+              <li>• Make sure <code className="text-purple-400">openmm serve</code> is running before you launch your client</li>
+              <li>• Restart your AI client after running <code className="text-purple-400">openmm-mcp --setup</code></li>
               <li>• Check that Node.js 18+ is installed and in your PATH</li>
-              <li>• Run <code className="text-purple-400">npx @qbtlabs/openmm-mcp setup</code> again</li>
+              <li>• Run <code className="text-purple-400">openmm-status</code> to verify the socket is active</li>
             </ul>
           </div>
           <div className="bg-card border border-border rounded-lg p-6">
             <h3 className="font-medium mb-2">Authentication errors?</h3>
             <ul className="text-sm text-gray-400 space-y-1">
-              <li>• Verify your API keys are correct and active</li>
+              <li>• Run <code className="text-purple-400">openmm-exchange list</code> to check configured exchanges</li>
+              <li>• Use <code className="text-purple-400">openmm-exchange add mexc</code> to re-enter credentials</li>
               <li>• Check that API trading permissions are enabled on the exchange</li>
-              <li>• Re-run the setup wizard to update credentials</li>
             </ul>
           </div>
           <div className="bg-card border border-border rounded-lg p-6">

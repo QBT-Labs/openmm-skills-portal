@@ -86,13 +86,13 @@ export default function QuickStartPage() {
         </div>
       </section>
 
-      {/* Quick Start - 2 Steps */}
+      {/* Quick Start - 4 Steps */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <Zap className="w-6 h-6 text-yellow-400" />
-          <h2 className="text-xl font-semibold">Quick Start (2 Steps)</h2>
+          <h2 className="text-xl font-semibold">Quick Start (4 Steps)</h2>
         </div>
-        
+
         <div className="space-y-8">
           {/* Step 1 */}
           <div className="relative pl-8 border-l-2 border-purple-500">
@@ -100,24 +100,11 @@ export default function QuickStartPage() {
               1
             </div>
             <div className="bg-card border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-2">Install & Setup</h3>
+              <h3 className="text-lg font-semibold mb-2">Install</h3>
               <p className="text-gray-400 text-sm mb-4">
-                Install OpenMM globally and run the interactive setup wizard
+                Install the OpenMM package globally
               </p>
-              <div className="space-y-3">
-                <CodeBlock code="npm install -g @3rd-eye-labs/openmm" label="Install" />
-                <CodeBlock code="npx @3rd-eye-labs/openmm setup" label="Setup Wizard" />
-              </div>
-              <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-                <p className="text-sm text-purple-300">
-                  <strong>The setup wizard will:</strong>
-                </p>
-                <ul className="text-sm text-purple-300/80 mt-2 space-y-1 list-disc list-inside">
-                  <li>Let you select exchanges (MEXC, Gate.io, Kraken, Bitget)</li>
-                  <li>Prompt for your API credentials</li>
-                  <li>Create a <code className="bg-purple-500/20 px-1 rounded">.env</code> file automatically</li>
-                </ul>
-              </div>
+              <CodeBlock code="npm install -g @qbtlabs/openmm-mcp" label="Install" />
             </div>
           </div>
 
@@ -127,53 +114,79 @@ export default function QuickStartPage() {
               2
             </div>
             <div className="bg-card border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-2">Verify Installation</h3>
+              <h3 className="text-lg font-semibold mb-2">Setup Vault, Wallet & Exchanges</h3>
               <p className="text-gray-400 text-sm mb-4">
-                Check that everything works by fetching your balance
+                Run the one-time setup wizard to create your encrypted vault
               </p>
-              <CodeBlock code="openmm balance --exchange mexc" />
+              <CodeBlock code="openmm-init" label="Setup Wizard" />
+              <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                <p className="text-sm text-purple-300">
+                  <strong>The setup wizard will:</strong>
+                </p>
+                <ul className="text-sm text-purple-300/80 mt-2 space-y-1 list-disc list-inside">
+                  <li>Create an AES-256-GCM encrypted vault</li>
+                  <li>Generate an on-chain wallet</li>
+                  <li>Prompt for exchange API credentials (stored in vault)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="relative pl-8 border-l-2 border-purple-500">
+            <div className="absolute -left-3 top-0 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
+              3
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-2">Start the Server</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Start the unified MCP server. Run this before launching any AI client.
+              </p>
+              <CodeBlock code="openmm serve" label="Start Server" />
               <p className="text-sm text-gray-500 mt-3">
-                ✅ If you see your balances, you're ready to go!
+                ✅ Once you see &quot;Ready — waiting for MCP connections...&quot; you&apos;re good.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 4 */}
+          <div className="relative pl-8 border-l-2 border-purple-500">
+            <div className="absolute -left-3 top-0 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
+              4
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-2">Configure Your AI Client</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Write the MCP config for your client (Claude, Cursor, Windsurf, etc.)
+              </p>
+              <CodeBlock code="openmm-mcp --setup" label="Configure Client" />
+              <p className="text-sm text-gray-500 mt-3">
+                This writes only <code className="text-purple-400">OPENMM_SOCKET</code> to your client config — no credentials leave the vault.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* MCP Setup */}
+      {/* Architecture Note */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">For AI Agents (MCP)</h2>
-        <div className="bg-card border border-border rounded-lg p-6">
-          <p className="text-gray-400 mb-4">
-            To use OpenMM with Claude Desktop, Cursor, or other MCP clients:
+        <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-2">How It Works</h2>
+          <p className="text-gray-300 text-sm mb-3">
+            One vault, one socket, zero credentials in your AI client.
           </p>
-          <div className="space-y-3">
-            <CodeBlock code="npm install -g @qbtlabs/openmm-mcp" label="Install MCP Server" />
-            <CodeBlock code="npx @qbtlabs/openmm-mcp setup" label="Configure MCP Client" />
-          </div>
+          <ul className="text-sm text-gray-400 space-y-1">
+            <li>• <code className="text-purple-400">openmm serve</code> unlocks your vault and opens a local IPC socket</li>
+            <li>• Your MCP client connects via <code className="text-purple-400">OPENMM_SOCKET</code> only</li>
+            <li>• Payment signing goes through the socket — private key never leaves the vault process</li>
+            <li>• Policy enforcement happens at the socket before the key is touched</li>
+          </ul>
           <p className="text-sm text-gray-500 mt-4">
-            The setup will configure your MCP client automatically. See{' '}
+            See{' '}
             <Link href="/docs/mcp-setup" className="text-purple-400 hover:underline">MCP Setup Guide</Link>{' '}
-            for client-specific instructions.
-          </p>
-        </div>
-      </section>
-
-      {/* API Server */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">REST API Server</h2>
-        <div className="bg-card border border-border rounded-lg p-6">
-          <p className="text-gray-400 mb-4">
-            Start the HTTP API server for web integrations:
-          </p>
-          <CodeBlock code="openmm serve --port 3000" />
-          <div className="mt-4 flex gap-4 text-sm">
-            <span className="text-gray-400">Swagger UI:</span>
-            <code className="text-purple-400">http://localhost:3000/docs</code>
-          </div>
-          <p className="text-sm text-gray-500 mt-4">
-            See <Link href="/docs/api-reference" className="text-purple-400 hover:underline">API Reference</Link>{' '}
-            for all 18 endpoints.
+            for client-specific instructions, or{' '}
+            <Link href="/docs/cli" className="text-purple-400 hover:underline">CLI Reference</Link>{' '}
+            for all commands.
           </p>
         </div>
       </section>

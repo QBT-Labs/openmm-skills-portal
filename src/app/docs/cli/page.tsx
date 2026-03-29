@@ -334,15 +334,20 @@ Socket      /tmp/openmm.sock ● active`}</code></pre>
         </div>
 
         <div className="mt-6">
-          <p className="text-sm text-gray-500 mb-3">No passwords. No API keys. Just the socket path &mdash; proof that you already authenticated.</p>
+          <p className="text-sm text-gray-500 mb-3">No passwords. No API keys. Just the socket path and payment server &mdash; credentials stay in the vault.</p>
           <CodeBlock
-            code={`// ~/.claude.json
+            code={`// ~/.claude.json — written by openmm-mcp --setup
 {
   "mcpServers": {
     "openmm": {
-      "command": "openmm-mcp",
+      "type": "stdio",
+      "command": "node",
+      "args": ["<openmm-mcp-path>/dist/index.js"],
       "env": {
-        "OPENMM_SOCKET": "/tmp/openmm.sock"
+        "MCP_TRANSPORT": "stdio",
+        "OPENMM_SOCKET": "/tmp/openmm.sock",
+        "PAYMENT_SERVER": "https://mcp.openmm.io",
+        "X402_TESTNET": "true"
       }
     }
   }

@@ -92,15 +92,16 @@ export default function OpenClawGuidePage() {
       <section className="mb-12 space-y-6">
         <h2 className="text-xl font-semibold mb-6">Option A: Install OpenClaw Plugin</h2>
         
-        <StepCard number={1} title="Install the OpenMM CLI">
-          <p>First, install the OpenMM CLI globally:</p>
-          <CodeBlock code="npm install -g @3rd-eye-labs/openmm" filename="Terminal" />
+        <StepCard number={1} title="Install & Setup">
+          <p>Install the OpenMM package and run the one-time setup wizard:</p>
+          <CodeBlock code="npm install -g @qbtlabs/openmm-mcp" filename="Terminal" />
+          <CodeBlock code="openmm-init" filename="Terminal" />
+          <p className="text-sm">This creates your encrypted vault, generates a wallet, and prompts for exchange credentials.</p>
         </StepCard>
 
-        <StepCard number={2} title="Run the Setup Wizard">
-          <p>The interactive wizard configures your exchange API credentials:</p>
-          <CodeBlock code="openmm setup" filename="Terminal" />
-          <p className="text-sm">This will prompt you for your API keys and securely store them.</p>
+        <StepCard number={2} title="Start the Server">
+          <p>Start the unified MCP server:</p>
+          <CodeBlock code="openmm serve" filename="Terminal" />
         </StepCard>
 
         <StepCard number={3} title="Install the OpenClaw Plugin">
@@ -117,10 +118,11 @@ export default function OpenClawGuidePage() {
       <section className="mb-12 space-y-6">
         <h2 className="text-xl font-semibold mb-6">Option B: Install Skills via ClawHub</h2>
         
-        <StepCard number={1} title="Install the OpenMM CLI & Configure">
-          <p>Install the CLI and run the setup wizard:</p>
-          <CodeBlock code={`npm install -g @3rd-eye-labs/openmm
-openmm setup`} filename="Terminal" />
+        <StepCard number={1} title="Install & Setup">
+          <p>Install the package and run the one-time setup wizard:</p>
+          <CodeBlock code={`npm install -g @qbtlabs/openmm-mcp
+openmm-init
+openmm serve`} filename="Terminal" />
         </StepCard>
 
         <StepCard number={2} title="Install OpenMM Skills">

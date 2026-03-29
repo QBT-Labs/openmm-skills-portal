@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { HeroTerminal } from '@/components/home/interactive-terminal'
 
 function CountUp({ end, suffix = '' }: { end: number; suffix?: string }) {
   const [count, setCount] = useState(0)
@@ -47,8 +48,8 @@ export function AnimatedHero() {
   const badgeRef = useRef<HTMLDivElement>(null)
   const subheadlineRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
+  const terminalRef = useRef<HTMLDivElement>(null)
 
-  // Hero entrance animation sequence — uses fromTo so elements are always visible at the end
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
@@ -57,6 +58,7 @@ export function AnimatedHero() {
     const badge = badgeRef.current
     const sub = subheadlineRef.current
     const stats = statsRef.current
+    const terminal = terminalRef.current
     if (!h1 || !badge || !sub || !stats) return
 
     const tl = gsap.timeline({ delay: 0.2 })
@@ -66,7 +68,6 @@ export function AnimatedHero() {
       { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' }
     )
 
-    // Stagger letters on line 1
     const letters = h1.querySelectorAll('.letter')
     if (letters.length) {
       tl.fromTo(letters,
@@ -76,7 +77,6 @@ export function AnimatedHero() {
       )
     }
 
-    // Animate gradient line as a whole block
     const gradientLine = h1.querySelector('.gradient-line')
     if (gradientLine) {
       tl.fromTo(gradientLine,
@@ -98,6 +98,14 @@ export function AnimatedHero() {
       '-=0.4'
     )
 
+    if (terminal) {
+      tl.fromTo(terminal,
+        { opacity: 0, x: 40 },
+        { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.6'
+      )
+    }
+
     return () => { tl.kill() }
   }, [])
 
@@ -114,7 +122,7 @@ export function AnimatedHero() {
   }
 
   return (
-    <section className="relative overflow-hidden pt-24 pb-8 flex items-center justify-center min-h-[70vh] bg-[#0a0a0f]">
+    <section className="relative overflow-hidden pt-20 pb-12 lg:pt-24 lg:pb-16 flex items-center justify-center min-h-[80vh] bg-[#0a0a0f]">
       {/* Layer 1: Eclipse Glow shader (base) */}
       <iframe
         src="/shaders/eclipse-glow.html"
@@ -143,43 +151,57 @@ export function AnimatedHero() {
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-        {/* Badge */}
-        <div ref={badgeRef} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-400/50 bg-black/40 text-purple-300 text-sm font-medium mb-8 backdrop-blur-md">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-400"></span>
-          </span>
-          One bridge. Every exchange.
-        </div>
+      {/* Content — 2-column grid */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
-        {/* Two-line headline */}
-        <h1 ref={headlineRef} className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6" style={{ perspective: '600px' }}>
-          <span className="block text-white animate-headline-1">
-            {renderLetters('AI Trading Tools')}
-          </span>
-          <span className="gradient-line block bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent mt-2 animate-headline-2">
-            For Your Agent
-          </span>
-        </h1>
+          {/* Left: Text content */}
+          <div className="text-center lg:text-left">
+            {/* Badge */}
+            <div ref={badgeRef} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-400/50 bg-black/40 text-purple-300 text-sm font-medium mb-6 backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-400"></span>
+              </span>
+              One bridge. Every exchange.
+            </div>
 
-        {/* Subheadline */}
-        <p ref={subheadlineRef} className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-6 leading-relaxed">
-          Connect any MCP-compatible AI agent to crypto exchanges.
-          Get prices, place orders, and run strategies with natural language.
-        </p>
+            {/* Headline */}
+            <h1 ref={headlineRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5" style={{ perspective: '600px' }}>
+              <span className="block text-white animate-headline-1">
+                {renderLetters('AI Trading Tools')}
+              </span>
+              <span className="gradient-line block bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent mt-2 animate-headline-2">
+                For Your Agent
+              </span>
+            </h1>
 
-        {/* Minimal inline stats — no cards */}
-        <div ref={statsRef} className="flex items-center justify-center gap-3 text-sm">
-          <span className="text-purple-400 font-semibold"><CountUp end={4} /></span>
-          <span className="text-gray-400">Exchanges</span>
-          <span className="text-gray-600">|</span>
-          <span className="text-purple-400 font-semibold"><CountUp end={30} suffix="+" /></span>
-          <span className="text-gray-400">Tools</span>
-          <span className="text-gray-600">|</span>
-          <span className="text-purple-400 font-semibold">Open</span>
-          <span className="text-gray-400">Source</span>
+            {/* Subheadline */}
+            <p ref={subheadlineRef} className="text-base sm:text-lg text-gray-300 max-w-lg mx-auto lg:mx-0 mb-5 leading-relaxed">
+              Connect your MCP server and use tools securely with vault encryption, process isolation, and policy management.
+            </p>
+
+            {/* Stats */}
+            <div ref={statsRef} className="flex items-center justify-center lg:justify-start gap-3 text-sm">
+              <span className="text-purple-400 font-semibold"><CountUp end={4} /></span>
+              <span className="text-gray-400">Exchanges</span>
+              <span className="text-gray-600">|</span>
+              <span className="text-purple-400 font-semibold"><CountUp end={30} suffix="+" /></span>
+              <span className="text-gray-400">Tools</span>
+              <span className="text-gray-600">|</span>
+              <span className="text-purple-400 font-semibold">Open</span>
+              <span className="text-gray-400">Source</span>
+            </div>
+          </div>
+
+          {/* Right: Terminal */}
+          <div ref={terminalRef} className="w-full max-w-xl mx-auto lg:mx-0">
+            <HeroTerminal />
+            <p className="text-center text-xs text-gray-500 mt-3">
+              Vault encryption · Process isolation · Policy enforcement
+            </p>
+          </div>
+
         </div>
       </div>
 
