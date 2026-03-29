@@ -9,14 +9,13 @@ import { Button } from '@/components/ui/button'
 import { AccessMethods } from '@/components/home/access-methods'
 import { SupportedExchanges } from '@/components/home/supported-exchanges'
 import { UseCases } from '@/components/home/use-cases'
-import { InteractiveTerminal } from '@/components/home/interactive-terminal'
 import { MCPClients } from '@/components/home/mcp-clients'
 import { PlugAndPlaySkills } from '@/components/home/plug-and-play-skills'
 import { AnimatedHero } from '@/components/home/animated-hero'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const INSTALL_COMMAND = 'npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp'
+const INSTALL_COMMAND = 'npm install -g @qbtlabs/openmm-mcp'
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -62,7 +61,6 @@ const features = [
 
 export default function Home() {
   const featuresGridRef = useRef<HTMLDivElement>(null)
-  const codePreviewRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -91,25 +89,6 @@ export default function Home() {
       )
     }
 
-    // Code preview fade-in
-    if (codePreviewRef.current) {
-      gsap.set(codePreviewRef.current, { opacity: 0, y: 80 })
-
-      tweens.push(
-        gsap.to(codePreviewRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: codePreviewRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        })
-      )
-    }
-
     return () => {
       tweens.forEach((t) => {
         t.scrollTrigger?.kill()
@@ -120,7 +99,7 @@ export default function Home() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)]">
-      {/* Animated Hero with Orb Background */}
+      {/* Hero with side-by-side terminal */}
       <AnimatedHero />
 
       {/* Install Command + CTA Section */}
@@ -147,9 +126,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      {/* Interactive Terminal Section */}
-      <InteractiveTerminal />
 
       {/* Features Section */}
       <section className="max-w-5xl mx-auto px-4 py-20">
@@ -185,51 +161,6 @@ export default function Home() {
 
       {/* Access Methods Section */}
       <AccessMethods />
-
-      {/* Code Preview Section */}
-      <section ref={codePreviewRef} className="max-w-5xl mx-auto px-4 pb-24">
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
-          {/* Terminal header */}
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-card">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <div className="w-3 h-3 rounded-full bg-green-500/80" />
-            </div>
-            <span className="text-xs text-gray-500 ml-2">Terminal</span>
-          </div>
-
-          {/* Terminal content */}
-          <div className="p-6 font-mono text-sm space-y-3">
-            <div className="flex items-start gap-2">
-              <span className="text-purple-400">$</span>
-              <span className="text-gray-300">npm install -g @3rd-eye-labs/openmm @qbtlabs/openmm-mcp</span>
-            </div>
-            <div className="text-gray-500">✓ Installed OpenMM CLI and MCP server</div>
-            <div className="mt-3 flex items-start gap-2">
-              <span className="text-purple-400">$</span>
-              <span className="text-gray-300">npx @3rd-eye-labs/openmm setup</span>
-            </div>
-            <div className="text-gray-500">✓ Configured MEXC, Gate.io, Bitget, Kraken</div>
-            <div className="mt-3 flex items-start gap-2">
-              <span className="text-purple-400">$</span>
-              <span className="text-gray-300">npx @qbtlabs/openmm-mcp setup</span>
-            </div>
-            <div className="text-gray-500">✓ Configured Claude Code, Cursor, Windsurf</div>
-            <div className="text-gray-500">✓ 30 tools available</div>
-            <div className="mt-4 pt-4 border-t border-border/50">
-              <div className="flex items-start gap-2">
-                <span className="text-green-400">Agent:</span>
-                <span className="text-gray-300">&quot;What&apos;s my total balance across all exchanges?&quot;</span>
-              </div>
-              <div className="flex items-start gap-2 mt-2">
-                <span className="text-purple-400">OpenMM:</span>
-                <span className="text-gray-300">$12,450.32 across 4 exchanges (MEXC: $8,200, Gate.io: $2,100...)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

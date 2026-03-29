@@ -1,340 +1,290 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Copy, Check, Play, RotateCcw } from 'lucide-react'
-import { useFadeInOnScroll } from '@/hooks/use-scroll-animation'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { Copy, Check, RotateCcw } from 'lucide-react'
 
-const setupSteps = [
-  {
-    command: 'npm install -g @3rd-eye-labs/openmm',
-    output: ['changed 39 packages in 3s'],
-    delay: 800,
-  },
-  {
-    command: 'npx @3rd-eye-labs/openmm setup',
-    output: [
-      '',
-      '┌───────────────────────────────────────────────────────────┐',
-      '│  ██████╗ ██████╗ ███████╗███╗   ██╗███╗   ███╗███╗   ███╗│',
-      '│ ██╔═══██╗██╔══██╗██╔════╝████╗  ██║████╗ ████║████╗ ████║│',
-      '│ ██║   ██║██████╔╝█████╗  ██╔██╗ ██║██╔████╔██║██╔████╔██║│',
-      '│ ██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║██║╚██╔╝██║██║╚██╔╝██║│',
-      '│ ╚██████╔╝██║     ███████╗██║ ╚████║██║ ╚═╝ ██║██║ ╚═╝ ██║│',
-      '│  ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝╚═╝     ╚═╝╚═╝     ╚═╝│',
-      '│  AI-Native Market Making Infrastructure                  │',
-      '│  Configure your exchange API credentials                 │',
-      '└───────────────────────────────────────────────────────────┘',
-      '',
-      'Which exchanges do you want to configure?',
-      '  1. MEXC',
-      '  2. Gate.io',
-      '  3. Kraken',
-      '  4. Bitget',
-      '',
-      'Enter numbers separated by commas (e.g., 1,2,3)',
-      'Or press Enter for all exchanges',
-      '',
-      'Your selection: 1',
-      '',
-      '🔑 MEXC credentials',
-      '   Get your API key at: https://www.mexc.com/api',
-      '   API Key: ********',
-      '   Secret Key: ********',
-      '',
-      '✅ Credentials saved to .env',
-      '',
-      '💡 Try running: openmm balance --exchange mexc',
-    ],
-    delay: 2500,
-  },
-  {
-    command: 'npm install -g @qbtlabs/openmm-mcp',
-    output: ['changed 129 packages in 3s'],
-    delay: 800,
-  },
-  {
-    command: 'npx @qbtlabs/openmm-mcp setup',
-    output: [
-      '',
-      'Which MCP clients do you want to configure?',
-      '  1. Claude Desktop',
-      '  2. Claude Code',
-      '  3. Cursor',
-      '  4. Windsurf',
-      '',
-      'Your selection: 2',
-      '',
-      '📁 Will configure 1 client(s):',
-      '   • Claude Code: ~/.claude/settings.json',
-      '',
-      '✅ OpenMM configured for Claude Code',
-      '🔄 Restart Claude Code to activate the changes.',
-      '',
-      '💡 Try asking your agent: "What is my balance on MEXC?"',
-    ],
-    delay: 2000,
-  },
-  {
-    command: 'npx @qbtlabs/openmm-skills --all',
-    output: [
-      '',
-      '┌─────────────────────────────────────────┐',
-      '│  ███████╗██╗  ██╗██╗██╗     ██╗     ███████╗ │',
-      '│  ██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝ │',
-      '│  ███████╗█████╔╝ ██║██║     ██║     ███████╗ │',
-      '│  ╚════██║██╔═██╗ ██║██║     ██║     ╚════██║ │',
-      '│  ███████║██║  ██╗██║███████╗███████╗███████║ │',
-      '│  ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝ │',
-      '│  QBT Labs — Open-source market making        │',
-      '└─────────────────────────────────────────────┘',
-      '',
-      '◇ Source: https://github.com/QBT-Labs/OpenMM-ai.git',
-      '◇ Repository cloned',
-      '◇ Found 5 skills',
-      '● Installing all 5 skills',
-      '● Installing to all 41 agents',
-      '',
-      '◇ Installation Summary',
-      '  ├── openmm-exchange-setup',
-      '  ├── openmm-grid-trading',
-      '  ├── openmm-order-management',
-      '  ├── openmm-cardano-dex',
-      '  └── openmm-portfolio',
-      '',
-      '✅ All skills installed successfully!',
-    ],
-    delay: 2500,
-  },
-]
+type TabKey = 'setup' | 'trade' | 'connect'
 
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  return (
-    <button
-      onClick={copy}
-      className="p-1.5 hover:bg-white/10 rounded transition-colors"
-      aria-label="Copy to clipboard"
-    >
-      {copied ? (
-        <Check className="w-3.5 h-3.5 text-green-400" />
-      ) : (
-        <Copy className="w-3.5 h-3.5 text-gray-400 hover:text-white" />
-      )}
-    </button>
-  )
+interface Segment {
+  typed: string
+  output: string[]
+  nextDelay?: number
 }
 
-export function InteractiveTerminal() {
-  const sectionRef = useFadeInOnScroll<HTMLElement>()
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isTyping, setIsTyping] = useState(false)
-  const [displayedCommand, setDisplayedCommand] = useState('')
+function getLineColor(line: string): string {
+  if (line.startsWith('✅')) return 'text-green-400'
+  if (line.startsWith('💡') || line.startsWith('●')) return 'text-yellow-400'
+  if (line.startsWith('🔑') || line.startsWith('📁')) return 'text-cyan-400'
+  if (line.startsWith('🔄')) return 'text-blue-400'
+  if (line.startsWith('→')) return 'text-purple-400'
+  if (line.startsWith('$')) return 'text-purple-400'
+  if (line.includes('┌') || line.includes('│') || line.includes('└') || line.includes('├') || line.includes('█')) return 'text-green-500'
+  if (line.startsWith('Agent:')) return 'text-green-400'
+  if (line.startsWith('  Price') || line.startsWith('  Bid') || line.startsWith('  Ask') || line.startsWith('  24h') || line.startsWith('  Change') || line.startsWith('  Side') || line.startsWith('  Amount') || line.startsWith('  Range') || line.startsWith('  Grids') || line.startsWith('  Investment')) return 'text-white'
+  if (line.startsWith('Caller') || line.startsWith('Vault') || line.startsWith('Wallet') || line.startsWith('Exchanges') || line.startsWith('Socket')) return 'text-white'
+  if (line.startsWith('Which') || line.startsWith('Enter') || line.startsWith('Create') || line.startsWith('Confirm') || line.startsWith('Your selection') || line.startsWith('Ready')) return 'text-green-400'
+  if (line.startsWith('All flows')) return 'text-gray-500'
+  if (line.startsWith('changed')) return 'text-green-400'
+  if (line.startsWith('───')) return 'text-gray-600'
+  return 'text-gray-400'
+}
+
+const tabSegments: Record<TabKey, Segment[]> = {
+  setup: [
+    {
+      typed: '$ npm install -g @qbtlabs/openmm-mcp',
+      output: ['changed 129 packages in 3s', ''],
+      nextDelay: 600,
+    },
+    {
+      typed: '$ openmm-init',
+      output: [
+        'Create a vault password: ••••••••',
+        'Confirm password: ••••••••',
+        '',
+        '✅ Vault created at ~/.openmm/vault.enc',
+        '✅ Wallet generated  0x1a2B...9fE4',
+        '✅ Exchanges         2 configured (mexc, gateio)',
+        '✅ Credentials encrypted in vault',
+      ],
+      nextDelay: 1200,
+    },
+    {
+      typed: '$ openmm serve',
+      output: [
+        'Enter vault password: ••••••••',
+        '',
+        '✅ Vault unlocked',
+        '✅ Wallet loaded  0x1a2B...9fE4',
+        '✅ Exchanges       2 connected (mexc, gateio)',
+        '✅ Policy          max 0.1 ETH/tx, 1.0 ETH/day',
+        '✅ Socket          /tmp/openmm.sock (mode 0600)',
+        '',
+        'Ready — waiting for MCP connections...',
+      ],
+      nextDelay: 2500,
+    },
+  ],
+  trade: [
+    {
+      typed: 'Agent: "What\'s the BTC/USDT price on MEXC?"',
+      output: [
+        '→ openmm_ticker(symbol: "BTC/USDT", exchange: "mexc")',
+        '',
+        '  Price       $67,342.50',
+        '  Bid         $67,340.00',
+        '  Ask         $67,345.00',
+        '  24h Vol     $2.1B',
+        '  Change      +2.4%',
+      ],
+      nextDelay: 1500,
+    },
+    {
+      typed: 'Agent: "Place a limit buy for 0.01 BTC at $67,000"',
+      output: [
+        '→ openmm_create_order(...)',
+        '',
+        '✅ Order placed  #MX-7821934',
+        '  Side        buy',
+        '  Price       $67,000.00',
+        '  Amount      0.01 BTC',
+      ],
+      nextDelay: 1500,
+    },
+    {
+      typed: 'Agent: "Set up a grid bot for ETH/USDT"',
+      output: [
+        '→ openmm_grid_start(...)',
+        '',
+        '✅ Grid strategy started  #GRID-4821',
+        '  Range       $3,200 — $3,800',
+        '  Grids       10 levels',
+        '  Investment  $500.00 USDT',
+      ],
+      nextDelay: 2500,
+    },
+  ],
+  connect: [
+    {
+      typed: '$ openmm-status',
+      output: [
+        '',
+        'Vault       ~/.openmm/vault.enc',
+        'Wallet      0x1a2B...9fE4',
+        'Exchanges   2 connected',
+        'Socket      /tmp/openmm.sock ● active',
+        '',
+        'Caller          Action               Exchange',
+        '───────────────────────────────────────────────',
+        'Claude          openmm_ticker        mexc',
+        'Claude          openmm_balance       gateio',
+        'Cursor          openmm_orderbook     mexc',
+        'Cursor          openmm_grid_status   mexc',
+        'Scripts         openmm_create_order  bitget',
+        '',
+        'All flows route through one vault, one socket.',
+      ],
+      nextDelay: 2500,
+    },
+  ],
+}
+
+const tabs: { key: TabKey; label: string }[] = [
+  { key: 'setup', label: 'Setup' },
+  { key: 'trade', label: 'Trade' },
+  { key: 'connect', label: 'Connect' },
+]
+
+export function HeroTerminal() {
+  const [activeTab, setActiveTab] = useState<TabKey>('setup')
+  const [segIdx, setSegIdx] = useState(0)
+  const [typedText, setTypedText] = useState('')
   const [showOutput, setShowOutput] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+  const [done, setDone] = useState<Segment[]>([])
+  const [animKey, setAnimKey] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
-  const resetTerminal = () => {
-    setCurrentStep(0)
-    setIsTyping(false)
-    setDisplayedCommand('')
+  const segments = tabSegments[activeTab]
+  const current = segments[segIdx] as Segment | undefined
+  const isComplete = segIdx >= segments.length
+
+  const restart = useCallback(() => {
+    setSegIdx(0)
+    setTypedText('')
     setShowOutput(false)
-    setIsPlaying(false)
-    setCompletedSteps([])
-  }
+    setDone([])
+    setAnimKey(k => k + 1)
+  }, [])
 
-  const playAnimation = () => {
-    resetTerminal()
-    setIsPlaying(true)
-  }
+  const switchTab = useCallback((tab: TabKey) => {
+    setActiveTab(tab)
+    setSegIdx(0)
+    setTypedText('')
+    setShowOutput(false)
+    setDone([])
+    setAnimKey(k => k + 1)
+  }, [])
 
+  // Auto-scroll to bottom
   useEffect(() => {
-    if (!isPlaying) return
-
-    const step = setupSteps[currentStep]
-    if (!step) {
-      setIsPlaying(false)
-      return
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
+  }, [typedText, showOutput, done])
 
-    setIsTyping(true)
+  // Typing animation
+  useEffect(() => {
+    if (isComplete || !current) return
+
+    const timers: ReturnType<typeof setTimeout>[] = []
     let charIndex = 0
-    const command = step.command
+    const text = current.typed
 
     const typingInterval = setInterval(() => {
-      if (charIndex <= command.length) {
-        setDisplayedCommand(command.slice(0, charIndex))
+      if (charIndex <= text.length) {
+        setTypedText(text.slice(0, charIndex))
         charIndex++
       } else {
         clearInterval(typingInterval)
-        setIsTyping(false)
 
-        setTimeout(() => {
+        const t1 = setTimeout(() => {
           setShowOutput(true)
-          setCompletedSteps(prev => [...prev, currentStep])
 
-          setTimeout(() => {
-            if (currentStep < setupSteps.length - 1) {
-              setShowOutput(false)
-              setDisplayedCommand('')
-              setCurrentStep(prev => prev + 1)
-            } else {
-              setIsPlaying(false)
-            }
-          }, step.delay)
+          const t2 = setTimeout(() => {
+            setDone(prev => [...prev, current])
+            setSegIdx(prev => prev + 1)
+            setTypedText('')
+            setShowOutput(false)
+          }, current.nextDelay ?? 1500)
+          timers.push(t2)
         }, 300)
+        timers.push(t1)
       }
     }, 25)
 
-    return () => clearInterval(typingInterval)
-  }, [currentStep, isPlaying])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      playAnimation()
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [])
-
-  const currentStepData = setupSteps[currentStep]
-
-  const getLineColor = (line: string) => {
-    if (line.startsWith('✅')) return 'text-green-400 success-glow'
-    if (line.startsWith('💡') || line.startsWith('●')) return 'text-yellow-400'
-    if (line.startsWith('🔑') || line.startsWith('📁')) return 'text-cyan-400'
-    if (line.startsWith('🔄')) return 'text-blue-400'
-    if (line.startsWith('◇')) return 'text-purple-400'
-    if (line.includes('┌') || line.includes('│') || line.includes('└') || line.includes('├') || line.includes('╔') || line.includes('║') || line.includes('╚') || line.includes('╝') || line.includes('╗') || line.includes('═') || line.includes('█') || line.includes('██') || line.includes('███')) return 'text-green-500'
-    if (line.startsWith('Which') || line.startsWith('Enter') || line.startsWith('Or press') || line.startsWith('Your selection')) return 'text-green-400'
-    if (line.includes('MEXC') || line.includes('Gate.io') || line.includes('Kraken') || line.includes('Bitget') || line.includes('Claude') || line.includes('Cursor') || line.includes('Windsurf')) return 'text-white'
-    if (line.includes('Get your API') || line.includes('API Key:') || line.includes('Secret') || line.includes('Will configure')) return 'text-gray-400'
-    if (line.startsWith('changed')) return 'text-green-400'
-    return 'text-gray-400'
-  }
+    return () => {
+      clearInterval(typingInterval)
+      timers.forEach(t => clearTimeout(t))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [segIdx, animKey])
 
   return (
-    <section ref={sectionRef} className="max-w-4xl mx-auto px-4 py-16">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-          <span className="bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
-            Setup in 60 Seconds
-          </span>
-        </h2>
-        <p className="text-gray-500">Install globally, configure once, trade everywhere</p>
-      </div>
+    <div className="rounded-xl border border-border bg-card overflow-hidden shadow-2xl shadow-purple-500/5">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-[#1a1a2e]">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+          <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+        </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
-        {/* Terminal header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-[#1a1a2e]">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <div className="w-3 h-3 rounded-full bg-green-500/80" />
-            </div>
-            <span className="text-xs text-gray-500 ml-2">Terminal — OpenMM Setup</span>
-          </div>
-          <div className="flex items-center gap-2">
+        {/* Tabs */}
+        <div className="flex items-center gap-1">
+          {tabs.map((tab) => (
             <button
-              onClick={playAnimation}
-              className="flex items-center gap-1.5 px-2 py-1 text-xs bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded transition-colors"
+              key={tab.key}
+              onClick={() => switchTab(tab.key)}
+              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                activeTab === tab.key
+                  ? 'bg-white/10 text-white'
+                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+              }`}
             >
-              {isPlaying ? <RotateCcw className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-              {isPlaying ? 'Restart' : 'Play'}
+              {tab.label}
             </button>
-          </div>
-        </div>
-
-        {/* Terminal content */}
-        <div className="p-6 font-mono text-sm bg-[#0d0d1a] min-h-[420px] max-h-[520px] overflow-y-auto">
-          {/* Completed steps */}
-          {completedSteps.map((stepIndex) => (
-            <div key={stepIndex} className="mb-4">
-              <div className="flex items-center gap-2 group">
-                <span className="text-purple-400 select-none">$</span>
-                <span className="text-gray-300 flex-1">{setupSteps[stepIndex].command}</span>
-                <CopyButton text={setupSteps[stepIndex].command} />
-              </div>
-              <div className="ml-4 mt-1 space-y-0.5">
-                {setupSteps[stepIndex].output.map((line, i) => (
-                  <div key={i} className={`text-xs whitespace-pre ${getLineColor(line)}`}>
-                    {line || '\u00A0'}
-                  </div>
-                ))}
-              </div>
-            </div>
           ))}
+        </div>
 
-          {/* Current step (typing) */}
-          {isPlaying && currentStepData && !completedSteps.includes(currentStep) && (
-            <div className="mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-purple-400 select-none">$</span>
-                <span className="text-gray-300">
-                  {displayedCommand}
-                  {isTyping && <span className="cursor-blink text-purple-400">▋</span>}
-                </span>
+        {/* Refresh */}
+        <button
+          onClick={restart}
+          className="p-1.5 hover:bg-white/10 rounded transition-colors group"
+          aria-label="Replay animation"
+        >
+          <RotateCcw className="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-colors" />
+        </button>
+      </div>
+
+      {/* Content */}
+      <div ref={scrollRef} className="p-4 font-mono text-xs bg-[#0d0d1a] min-h-[340px] max-h-[380px] overflow-y-auto">
+        {/* Completed segments */}
+        {done.map((seg, si) => (
+          <div key={`${animKey}-${si}`} className="mb-2">
+            <div className={`whitespace-pre leading-relaxed ${getLineColor(seg.typed)}`}>
+              {seg.typed}
+            </div>
+            {seg.output.map((line, li) => (
+              <div key={li} className={`whitespace-pre leading-relaxed ${getLineColor(line)}`}>
+                {line || '\u00A0'}
               </div>
-              {showOutput && (
-                <div className="ml-4 mt-1 space-y-0.5">
-                  {currentStepData.output.map((line, i) => (
-                    <div key={i} className={`text-xs whitespace-pre ${getLineColor(line)}`}>
-                      {line || '\u00A0'}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+            ))}
+          </div>
+        ))}
 
-          {/* Waiting cursor when not playing */}
-          {!isPlaying && completedSteps.length === 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-purple-400 select-none">$</span>
-              <span className="cursor-blink text-purple-400">▋</span>
+        {/* Current segment */}
+        {!isComplete && current && (
+          <div className="mb-2">
+            <div className={`whitespace-pre leading-relaxed ${getLineColor(current.typed)}`}>
+              {typedText}
+              {!showOutput && <span className="animate-pulse text-purple-400">▋</span>}
             </div>
-          )}
+            {showOutput && current.output.map((line, li) => (
+              <div key={li} className={`whitespace-pre leading-relaxed ${getLineColor(line)}`}>
+                {line || '\u00A0'}
+              </div>
+            ))}
+          </div>
+        )}
 
-          {/* Final prompt after completion */}
-          {!isPlaying && completedSteps.length === setupSteps.length && (
-            <div className="flex items-center gap-2 mt-4">
-              <span className="text-purple-400 select-none">$</span>
-              <span className="cursor-blink text-purple-400">▋</span>
-            </div>
-          )}
-        </div>
+        {/* Final cursor */}
+        {isComplete && (
+          <div className="mt-1">
+            <span className="text-purple-400">$ </span>
+            <span className="animate-pulse text-purple-400">▋</span>
+          </div>
+        )}
       </div>
-
-      {/* Quick copy commands */}
-      <div className="mt-6 grid sm:grid-cols-3 gap-3">
-        <div className="bg-card/80 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-2">CLI</div>
-          <div className="flex items-center justify-between">
-            <code className="text-purple-400 text-xs truncate mr-2">npm i -g @3rd-eye-labs/openmm</code>
-            <CopyButton text="npm install -g @3rd-eye-labs/openmm && npx @3rd-eye-labs/openmm setup" />
-          </div>
-        </div>
-        <div className="bg-card/80 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-2">MCP Server</div>
-          <div className="flex items-center justify-between">
-            <code className="text-purple-400 text-xs truncate mr-2">npm i -g @qbtlabs/openmm-mcp</code>
-            <CopyButton text="npm install -g @qbtlabs/openmm-mcp && npx @qbtlabs/openmm-mcp setup" />
-          </div>
-        </div>
-        <div className="bg-card/80 border border-border rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-2">Skills</div>
-          <div className="flex items-center justify-between">
-            <code className="text-purple-400 text-xs truncate mr-2">npx @qbtlabs/openmm-skills --all</code>
-            <CopyButton text="npx @qbtlabs/openmm-skills --all" />
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   )
 }
